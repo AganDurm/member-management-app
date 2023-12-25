@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="col-8 col-md-4">
+    <form id="uploadForm" enctype="multipart/form-data" method="post">
+      <h1 class="text-center mb-4">Excel File Upload</h1>
+      <div class="input-group mb-3">
+        <input type="file" name="file" (change)="onFileSelected($event)" id="excelFile" accept=".xlsx" class="form-control">
+      </div>
+      <div class="d-grid">
+        <input type="submit" value="Upload" (click)="uploadExcelFile()" class="btn btn-primary">
+      </div>
+    </form>
+  </div>
+</div>

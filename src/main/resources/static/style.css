@@ -1,0 +1,41 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
+
+:root {
+    --dark: #303032;
+    --cardHeight: 180px;
+    --transparent: transparent;
+    --mainColor:  linear-gradient(79deg, #29813E 0%, #41c260 100%);;
+    --white: white;
+    --whisper: #EEE;
+    --cardWidth: 360px;
+    --fontFamily: "Lato", sans-serif;
+    user-select: none;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FFF;
+    font-family: var(--fontFamily);
+    font-size: 20px;
+    color: #666666;
+}
+
+a {
+    cursor: pointer;
+}
+
+.loading {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

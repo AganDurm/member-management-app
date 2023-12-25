@@ -1,0 +1,139 @@
+<!--suppress HtmlUnknownAttribute -->
+<div class="container" ng-controller="MemberManagementController">
+    <div class="container pt-4 pb-4">
+        <div class="row pt-2 pb-2">
+            <div class="col-md-8 col-8 d-flex align-items-center">
+                <h3 class="mb-0">Mitgliederverwaltung</h3>
+            </div>
+            <div class="col-md-4 col-4 text-end">
+                <button class="btn btn-danger position-relative" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteAllModal">
+                    <i class="fa fa-trash"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-light">
+                        {{userDataMap.length}}
+                        <span class="visually-hidden">Anzahl</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row pb-4 pt-2">
+            <div class="col-md-8 mt-1">
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <label for="activeFilter">Aktive</label>
+                        <input type="checkbox" id="activeFilter" ng-click="toggleActiveFilter()" ng-model="activeFilter" class="mx-2"/>
+                    </div>
+                    <div class="input-group-text mx-2">
+                        <label for="inactiveFilter">Gesperrte</label>
+                        <input type="checkbox" id="inactiveFilter" ng-click="toggleInactiveFilter()" ng-model="inactiveFilter" class="mx-2">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-1">
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Name"
+                           aria-label="Username"
+                           aria-describedby="basic-addon1"
+                           id="searchInput"
+                           ng-model="searchText">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-4 col-md-6 pb-2" ng-repeat="userData in userDataMap | filter: filterUserData">
+                <div class="card mb-3" style="height: 100%;">
+                    <div class="card-body pt-4">
+                        <h5 class="card-title">E-Mail: {{userData.id}}</h5>
+                        <p class="card-text">Password: {{userData.password}}</p>
+                        <p class="card-text">Name: {{userData.username}}</p>
+                        <p class="card-text">Mitgliedsnummer: {{userData.mitgliedsnummer}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-10 col-10">
+                                <a class="btn btn-outline-dark" ng-href="/{{ userData.id }}">Verwalten</a>
+                                <button class="btn"
+                                        ng-class="{'btn-outline-success': userData.active, 'btn-outline-warning': !userData.active}"
+                                        ng-click="toggleUserActiveStatus(userData)">
+                                    {{ userData.active ? 'Aktiv' : 'Gesperrt' }} <i class="fa fa-rotate"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-2 col-2">
+                                <button class="btn btn-outline-danger" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Mitglied löschen</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mt-3">
+                                    <span>Möchtest du <strong>{{ userData.id }}</strong> löschen?</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span>Zur Zeit <strong>{{ userData.active ? 'nicht Gesperrt' : 'Gesperrt' }}.</strong> </span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nein</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" ng-click="deleteUser(userData.id)">Ja</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmDeleteAllModal" tabindex="-1" aria-labelledby="deleteAllLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAllLabel">Mitglied löschen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-3">
+                        <span>Möchtest du <strong>alle</strong> Mitglieder löschen?</span>
+                    </div>
+                    <div class="mb-3">
+                        <span><span class="badge rounded-pill bg-danger">HINWEIS</span> Dieser Vorgang kann nicht rückgängig gemacht werden.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nein</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" ng-click="deleteAllUserData()">Ja</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4 mb-4" ng-show="!dataAvailable">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-4">
+                <form id="uploadForm" ng-submit="uploadExcelFile()" class="mt-5">
+                    <h1 class="text-center mb-4">Excel File Upload</h1>
+                    <div class="input-group mb-3">
+                        <input type="file" name="file" id="excelFile" accept=".xlsx" class="form-control">
+                    </div>
+                    <div class="d-grid">
+                        <input type="submit" value="Upload" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading bg-light" ng-show="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>

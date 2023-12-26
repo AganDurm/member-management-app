@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.fcb.userdata.adapter.api.response.ApiResponse;
@@ -26,20 +26,20 @@ import lombok.RequiredArgsConstructor;
 public class DeleteUserFilesRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserFilesRestController.class);
 
-    private static final String USER_DELETE_FILE_BY_USER_ID_RESOURCE_URL = "user/file/delete";
+    private static final String USER_DELETE_FILE_BY_USER_ID_RESOURCE_URL = "/members/{memberId}/{fileName}/delete";
 
     private final UserFileService userFileService;
 
     @DeleteMapping(USER_DELETE_FILE_BY_USER_ID_RESOURCE_URL)
-    public ResponseEntity<ApiResponse> deleteFile(@RequestParam final String userId, @RequestParam final String fileName) {
+    public ResponseEntity<ApiResponse> deleteFile(@PathVariable final String memberId, @PathVariable final String fileName) {
         try {
-            final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + userId;
+            final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + memberId;
             final Path directory = Paths.get(uploadDirectory);
             final Path fileToDelete = directory.resolve(fileName);
 
             if (Files.exists(fileToDelete)) {
                 Files.delete(fileToDelete);
-                this.userFileService.deleteFile(userId, fileName);
+                this.userFileService.deleteFile(memberId, fileName);
                 return ResponseEntity.ok(new ApiResponse("File " + fileName + " deleted."));
             } else {
                 LOGGER.error("File {} not found.", fileName);

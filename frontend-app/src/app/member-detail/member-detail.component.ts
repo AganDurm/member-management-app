@@ -7,7 +7,6 @@ import {ApiService} from '../api/service/api.service';
 import {LoadingService} from '../loading.service';
 import {ResponseMessageService} from '../response-message.service';
 import {saveAs} from 'file-saver';
-// import * as pdfjsLib from 'pdfjs-dist';
 import {ChangedMembersData} from '../model/changed-members-data';
 import {ApiResponse} from '../api/models/api-response';
 import {EditStates} from './models/editStates';
@@ -28,8 +27,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   pdfUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl("");
   selectedFiles: any[] = [];
-  game: string = '';
   messages: string[] = [];
+  memberId: string | null = '';
   member: Member = {
     id: '',
     username: '',
@@ -38,16 +37,14 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     mitgliedsnummer: '',
     kundennummer: '',
   };
-  memberId: string | null = '';
   editStates: EditStates = {
     username: false,
     mitgliedsnummer: false,
     kundennummer: false,
     password: false,
   };
+  game: string = '';
   files: File[] = [];
-  filterText: string = '';
-  uniqueGames: string[] = [];
 
   private subscription: Subscription = new Subscription();
 
@@ -148,10 +145,6 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.hide();
   }
 
-  setUniqueGame(game: string): void {
-    this.messageService.displayMessage("Set unique game" + game);
-  }
-
   loadPdf(memberId: string, fileName: string): void {
     const unsafeUrl = "http://localhost:8080/members/" + memberId + "/" + fileName + "/preview";
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
@@ -172,7 +165,13 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteFile(userId: string, fileName: string): void {
-    this.messageService.displayMessage("Delete file" + userId + " : " + fileName);
+    this.apiService.deletePdfFileByMemberIdAndFileName(userId, fileName).subscribe({
+      next: (respones) => {
+        this.files = this.files.filter(item => item.fileName !== fileName);
+        this.messageService.displayMessage(respones.message);
+      },
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
   }
 
   uploadFile(): void {

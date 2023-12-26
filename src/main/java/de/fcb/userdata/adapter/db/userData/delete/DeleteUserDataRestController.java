@@ -70,15 +70,15 @@ public class DeleteUserDataRestController {
      * @return the {@link ResponseEntity#ok} if delte was success or {@link ResponseEntity#badRequest} if not.
      */
     @DeleteMapping(DELETE_USER_BY_ID)
-    public ResponseEntity<String> deleteMamberById(@PathVariable final String memberId) {
+    public ResponseEntity<ApiResponse> deleteMamberById(@PathVariable final String memberId) {
         try {
             this.userDataService.deleteUserById(memberId);
-            LOGGER.info("Member with ID: {} deleted!", memberId);
-            return ResponseEntity.ok().build();
+            LOGGER.info("Member with ID: {} deleted.", memberId);
+            return ResponseEntity.ok().body(new ApiResponse("Mitglied mit ID: " + memberId + " gelöscht."));
         } catch (final Exception e) {
             e.printStackTrace();
             LOGGER.error("Member with ID: {} not deleted!", memberId);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(new ApiResponse("Fehler! Mitglied mit ID:" + memberId + " nicht gelöscht!"));
         }
     }
 

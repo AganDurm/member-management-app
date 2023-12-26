@@ -27,6 +27,7 @@ export class ApiService {
   private readonly findAllFilesByMemeberId: string;
 
   private readonly downloadFileByUserIdUrl: string;
+  private readonly deletePdfFileByMemberIdAndFileNameUrl: string;
 
   constructor(private http: HttpClient) {
     this.membersUrl = 'http://localhost:8080/members';
@@ -48,6 +49,7 @@ export class ApiService {
     this.findAllFilesByMemeberId = this.memberUrl;
 
     this.downloadFileByUserIdUrl = this.memberUrl;
+    this.deletePdfFileByMemberIdAndFileNameUrl = this.memberUrl;
   }
 
   public uploadExcelFile(formData: FormData): Observable<string> {
@@ -106,7 +108,8 @@ export class ApiService {
     return this.http.get<Blob>(this.downloadFileByUserIdUrl + memberId + "/" + fileName + "/download", { responseType: 'blob' as 'json' });
   }
 
-  // public previewPdfFileByUserId(memberId: string, fileName: string): Promise<pdfjsLib.PDFDocumentProxy> {
-  //   return pdfjsLib.getDocument(this.downloadFileByUserIdUrl + memberId + "/" + fileName + "/preview").promise;
-  // }
+  public deletePdfFileByMemberIdAndFileName(memberId: string, fileName: string): Observable<ApiResponse> {
+    const url = this.deletePdfFileByMemberIdAndFileNameUrl + memberId + '/' + fileName + '/' + 'delete';
+    return this.http.delete<ApiResponse>(url);
+  }
 }

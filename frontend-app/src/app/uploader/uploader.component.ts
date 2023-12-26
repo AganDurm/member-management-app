@@ -1,21 +1,23 @@
-import { Component, EventEmitter, OnInit, OnDestroy, Output } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {LoadingService} from '../loading.service';
 import {ApiService} from '../api/service/api.service';
 import {ResponseMessageService} from '../response-message.service';
+import {SharedModule} from '../shared/shared.module';
+import {PreloaderComponent} from '../preloader/preloader.component';
 
 @Component({
   selector: 'app-uploader',
   standalone: true,
-  imports: [],
+  imports: [SharedModule, PreloaderComponent],
   templateUrl: './uploader.component.html',
   styleUrl: './uploader.component.less'
 })
 export class UploaderComponent implements OnInit, OnDestroy {
-  private messageSubscription!: Subscription;
-  private loadingSubscription!: Subscription;
-  private subscriptionMembers!: Subscription;
+  private messageSubscription: Subscription = new Subscription();
+  private loadingSubscription: Subscription = new Subscription();
+  private subscriptionMembers: Subscription = new Subscription();
 
   protected isLoading: boolean = false;
   protected selectedFile: File | null = null;
@@ -30,15 +32,17 @@ export class UploaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadingSubscription = this.loadingService.loading$.subscribe((isLoading: boolean) => this.isLoading = isLoading);
+    this.loadingSubscription = this.loadingService.loading$.subscribe({ next: isLoading => this.isLoading = isLoading });
 
-    this.subscriptionMembers = this.apiService.countMembers().subscribe((memberCount) => {
-      if (memberCount > 0) {
-        this.router.navigate(['/members']).then(() => {});
+    this.subscriptionMembers = this.apiService.countMembers().subscribe({
+      next: memberCount => {
+        if (memberCount > 0) {
+          this.router.navigate(['/members']).then(() => {});
+        }
       }
     });
 
-    this.messageSubscription = this.messageService.getMessages().subscribe((messages: string[]) => this.messages = messages);
+    this.messageSubscription = this.messageService.getMessages().subscribe({ next: messages => this.messages = messages });
   }
 
   public async uploadExcelFile(): Promise<void> {
@@ -48,7 +52,7 @@ export class UploaderComponent implements OnInit, OnDestroy {
     formData.append('file', this.selectedFile);
 
     try {
-      await this.apiService.uploadExcelFile(formData).pipe();
+      await this.apiService.uploadExcelFile(formData).toPromise();
       this.router.navigate(['/members']).then(() => {});
       this.messageService.displayMessage("Upload war erfolgreich.");
     } catch (error) {

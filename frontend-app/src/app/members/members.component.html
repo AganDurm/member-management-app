@@ -20,26 +20,26 @@
                         <label for="activeFilter">Aktive</label>
                         <input type="checkbox" id="activeFilter" class="mx-2"
                                (click)="toggleActiveFilter()"
-                               ngModel="activeFilter"/>
+                               [(ngModel)]="activeFilter"/>
                     </div>
                     <div class="input-group-text mx-2">
                         <label for="inactiveFilter">Gesperrte</label>
                         <input type="checkbox" id="inactiveFilter" class="mx-2"
                                (click)="toggleInactiveFilter()"
-                               ngModel="inactiveFilter"/>
+                               [(ngModel)]="inactiveFilter"/>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mt-1">
                 <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1">@</span>
+                    <span class="input-group-text" id="basic-addon1">&#64;</span>
                     <input type="text"
                            class="form-control"
                            placeholder="Name"
                            aria-label="Username"
                            aria-describedby="basic-addon1"
                            id="searchInput"
-                           ngModel="searchText">
+                           [(ngModel)]="searchText">
                 </div>
             </div>
         </div>
@@ -55,11 +55,10 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-10 col-10">
-                                <a class="btn btn-outline-dark" routerLink="['/members', member.id]">Verwalten</a>
-                                <button class="btn"
-                                        ngClass="{'btn-outline-success': member.active, 'btn-outline-warning': !member.active}"
-                                        (click)="toggleMemberActiveStatus(member)">
-                                    {{ member?.active ? 'Aktiv' : 'Gesperrt' }} <i class="fa fa-rotate"></i>
+                                <a class="btn btn-outline-dark" [routerLink]="['/members', member.id]">Verwalten</a>
+                                <button class="mx-2 btn"
+                                        [ngClass]="{'btn-outline-success': member.active, 'btn-outline-warning': !member.active}"
+                                        (click)="toggleMemberActiveStatus(member)">{{ member?.active ? 'Aktiv' : 'Gesperrt' }} <i class="fa fa-rotate"></i>
                                 </button>
                             </div>
                             <div class="col-md-2 col-2" *ngIf="!member.active">
@@ -87,7 +86,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nein</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteMember(member.id)">Ja</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                        (click)="deleteMember(member.id)">Ja</button>
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nein</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteAllMembers()">Ja</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            (click)="deleteAllMembers()">Ja</button>
                 </div>
             </div>
         </div>

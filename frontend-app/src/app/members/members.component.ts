@@ -1,18 +1,19 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Member} from '../model/member';
 import {ApiService} from '../api/service/api.service';
 import {LoadingService} from '../loading.service';
 import {ResponseMessageService} from '../response-message.service';
 import {ApiResponse} from '../api/models/api-response';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import {SharedModule} from '../shared/shared.module';
+import {FilterMembers} from '../filter-members.pipe';
+import {PreloaderComponent} from '../preloader/preloader.component';
 
 @Component({
   selector: 'app-members',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [SharedModule, FilterMembers, PreloaderComponent],
   templateUrl: './members.component.html',
   styleUrl: './members.component.less'
 })
@@ -26,9 +27,9 @@ export class MembersComponent implements OnInit, OnDestroy {
   inactiveFilter: boolean = false;
   isLoading: boolean = false;
 
-  private subscription!: Subscription;
-  private messageSubscription!: Subscription;
-  private loadingSubscription!: Subscription;
+  private subscription: Subscription = new Subscription();
+  private messageSubscription: Subscription = new Subscription();
+  private loadingSubscription: Subscription = new Subscription();
 
   constructor(private router: Router,
               private apiService: ApiService,
@@ -83,7 +84,7 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   toggleMemberActiveStatus(member: Member): void {
     member.active = !member.active;
-    this.apiService.updateMemberActiveStatus(member.id).pipe().subscribe({
+    this.apiService.updateMemberActiveStatus(member.id).subscribe({
       next: (response: ApiResponse) => {
         this.messageService.displayMessage(response.message);
         this.filterMembers();
@@ -95,7 +96,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   deleteMember(memberId: string): void {
     this.loadingService.show();
 
-    this.apiService.deleteMemberById(memberId).pipe().subscribe({
+    this.apiService.deleteMemberById(memberId).subscribe({
       next: () => {
         this.members = this.members.filter((member: Member) => member.id !== memberId);
         this.filteredMembers = this.members;
@@ -110,14 +111,13 @@ export class MembersComponent implements OnInit, OnDestroy {
   deleteAllMembers(): void {
     this.loadingService.show();
 
-    this.apiService.deleteAllMembers().pipe().subscribe({
+    this.apiService.deleteAllMembers().subscribe({
       next: (data: ApiResponse) => {
         this.filteredMembers = [];
         this.messageService.displayMessage(data.message);
         this.router.navigate(['/upload']).then(() => {});
       },
       error: (error) => this.messageService.displayMessage(error.message)
-
   });
 
     this.loadingService.hide();

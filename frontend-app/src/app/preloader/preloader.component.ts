@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {LoadingService} from '../loading.service';
-import {CommonModule} from '@angular/common';
+import {SharedModule} from '../shared/shared.module';
 
 @Component({
   selector: 'app-preloader',
   standalone: true,
-  imports: [CommonModule],
+  imports: [SharedModule],
   templateUrl: './preloader.component.html',
   styleUrl: './preloader.component.less'
 })

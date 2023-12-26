@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Member} from '../model/member';
 import {File} from '../model/file';
 import {Subscription} from 'rxjs';
@@ -6,21 +6,27 @@ import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../api/service/api.service';
 import {LoadingService} from '../loading.service';
 import {ResponseMessageService} from '../response-message.service';
-import { saveAs } from 'file-saver';
-import * as pdfjsLib from 'pdfjs-dist';
+import {saveAs} from 'file-saver';
+// import * as pdfjsLib from 'pdfjs-dist';
 import {ChangedMembersData} from '../model/changed-members-data';
 import {ApiResponse} from '../api/models/api-response';
+import {EditStates} from './models/editStates';
+import {SharedModule} from '../shared/shared.module';
+import {FilterUserFile} from '../filter-user-file.pipe';
+import {PreloaderComponent} from '../preloader/preloader.component';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-member-detail',
   standalone: true,
-  imports: [],
+  imports: [SharedModule, FilterUserFile, PreloaderComponent],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.less'
 })
 export class MemberDetailComponent implements OnInit, OnDestroy {
-  @ViewChild('pdfCanvas') pdfCanvas: ElementRef;
 
+  pdfUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl("");
   selectedFiles: any[] = [];
   game: string = '';
   messages: string[] = [];
@@ -32,23 +38,24 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     mitgliedsnummer: '',
     kundennummer: '',
   };
-  memberId: string | null;
-  editStates = {
+  memberId: string | null = '';
+  editStates: EditStates = {
     username: false,
     mitgliedsnummer: false,
     kundennummer: false,
-    password: false
+    password: false,
   };
   files: File[] = [];
   filterText: string = '';
   uniqueGames: string[] = [];
 
-  private subscription!: Subscription;
+  private subscription: Subscription = new Subscription();
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
               private loadingService: LoadingService,
-              private messageService: ResponseMessageService) { }
+              private messageService: ResponseMessageService,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.loadingService.show();
@@ -72,7 +79,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.hide();
   }
 
-  toggleEdit(field: string, newValue: string, userId: string): void {
+  toggleEdit(field: keyof EditStates, newValue: string, userId: string): void {
     this.editStates[field] = !this.editStates[field];
 
     if (!this.editStates[field]) {
@@ -146,26 +153,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   loadPdf(memberId: string, fileName: string): void {
-    pdfjsLib.getDocument("http://localhost:8080/members/" + memberId + "/" + fileName + "/preview").promise.then(pdfDoc => {
-      pdfDoc.getPage(1).then(page => {
-        const viewport = page.getViewport({ scale: 1 });
-        const canvas = this.pdfCanvas.nativeElement as HTMLCanvasElement;
-        const context = canvas.getContext('2d');
-
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        const renderContext = {
-          canvasContext: context,
-          viewport: viewport
-        };
-
-        page.render(renderContext);
-        this.messageService.displayMessage("PDF: "+ fileName + " für " + memberId + " geladen.");
-      });
-    }).catch(() => {
-      this.messageService.displayMessage('Fehler! PDF nicht geladen!');
-    });
+    const unsafeUrl = "http://localhost:8080/members/" + memberId + "/" + fileName + "/preview";
+    this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
   }
 
   downloadFile(userId: string, fileName: string): void {

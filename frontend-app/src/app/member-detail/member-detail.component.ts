@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Member} from '../model/member';
 import {File} from '../model/file';
-import {Subscription} from 'rxjs';
+import {catchError, forkJoin, map, Observable, of, Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../api/service/api.service';
 import {LoadingService} from '../loading.service';
@@ -14,12 +14,14 @@ import {SharedModule} from '../shared/shared.module';
 import {FilterUserFile} from '../filter-user-file.pipe';
 import {PreloaderComponent} from '../preloader/preloader.component';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {GameFiles} from './models/gameFiles';
 
 
 @Component({
   selector: 'app-member-detail',
   standalone: true,
   imports: [SharedModule, FilterUserFile, PreloaderComponent],
+  providers: [LoadingService],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.less'
 })
@@ -30,6 +32,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   messages: string[] = [];
   memberId: string | null = '';
   uniqueGameNames: string[] = [];
+  games$: Observable<GameFiles[]> = of([]);
   member: Member = {
     id: '',
     username: '',
@@ -69,6 +72,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
             next: (files: File[]) => {
               this.files = files;
               this.uniqueGameNames = this.resolveUniqueGames(this.files);
+              this.loadAllGamesFiles(this.uniqueGameNames, this.member.id);
             },
             error: () => this.messageService.displayMessage('Dateien konnten nicht geladen werden.')
           });
@@ -174,6 +178,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         this.files = this.files.filter(item => item.fileName !== fileName);
         this.uniqueGameNames = this.resolveUniqueGames(this.files);
         this.messageService.displayMessage(respones.message);
+        this.loadAllGamesFiles(this.uniqueGameNames, this.member.id);
       },
       error: (error) => this.messageService.displayMessage(error.message)
     });
@@ -181,45 +186,58 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   uploadFile(): void {
     this.loadingService.show();
+    let formData: any = new FormData();
 
     if(this.game !== '' && this.selectedFiles.length > 0) {
-      const formData: any = new FormData();
       formData.append('game', this.game);
 
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        formData.append('files', this.selectedFiles[i]);
+      for (const file of this.selectedFiles) {
+        formData.append('files', file);
       }
 
       this.apiService.uploadPdfFiles(formData, this.memberId).subscribe({
         next: (files) => {
           this.files = files;
           this.uniqueGameNames = this.resolveUniqueGames(this.files);
+          this.loadAllGamesFiles(this.uniqueGameNames, this.member.id);
         },
         error: () => this.messageService.displayMessage('Error!')
       });
+    } else if(this.game === '') {
+      this.messageService.displayMessage('Fehler! Bitte das Spiel auswählen!');
     } else {
-      if(this.game === '') {
-        this.messageService.displayMessage('Fehler! Bitte das Spiel auswählen!');
-      } else {
-        this.messageService.displayMessage('Fehler! Bitte mindestens eine Datei auswählen!');
-      }
+      this.messageService.displayMessage('Fehler! Bitte mindestens eine Datei auswählen!');
     }
+    this.game = '';
+    this.selectedFiles = [];
+    (document.getElementById('fileInput') as HTMLInputElement).value = '';
 
     this.loadingService.hide();
   }
 
-  public findFilesByMemberIdAndGame(memberId: string, game: string) {
-    this.apiService.findAllFilesByMemeberIdAndGame(memberId, game).subscribe({
-      next: () => {},
-      error: () => {}
-    })
+  loadAllGamesFiles(games: string[], memberId: string): void {
+    this.loadingService.show();
+
+    const gameFilesObservables = games.map(game =>
+        this.apiService.findAllFilesByMemeberIdAndGame(memberId, game).pipe(
+            map(files => ({ game, files } as GameFiles)),
+            catchError(() => {
+              this.messageService.displayMessage(`Error loading files for game ${game}!`);
+              return of({ game, files: [] as File[] });
+            })
+        )
+    );
+
+    this.games$ = forkJoin(gameFilesObservables);
+
+    this.loadingService.hide();
   }
 
-  public onFilesSelected(event: any) {
+  public onFilesSelected(event: any): void {
     this.selectedFiles = event.target.files;
   }
 
-  resolveUniqueGames(userFiles: File[]) {
+  resolveUniqueGames(userFiles: File[]): string[] {
     if(userFiles.length > 0) {
       const games = userFiles.map(userFile => userFile.game);
       const uniqueGames = new Set(games);

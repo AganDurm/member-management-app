@@ -100,57 +100,59 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row pt-2 pb-2">
-                                    <h5 class="card-title col-8">{{ files.length > 0 ? 'Tickets' : 'Keine Tickets vorhanden' }}</h5>
+                                    <h5 class="card-title col-8 m-0 d-flex align-items-center">{{ files.length > 0 ? 'Tickets' : 'Keine Tickets vorhanden' }}</h5>
                                     <div class="text-end col-4">
                                         <button class="btn btn-success position-relative" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#uploadFileModal">
                                             <i class="fa fa-upload"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <hr class="bg-danger border-2 border-top border-info">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-hover">
-                                        <caption class="visually-hidden">Tickets</caption>
-                                        <thead class="table-light fs-6">
-                                        <tr>
-                                            <th scope="col" class="align-middle col-8">Name</th>
-                                            <th scope="col" class="align-middle">Spiel</th>
-                                            <th scope="col" class="align-middle text-center">Download</th>
-                                            <th scope="col" class="align-middle text-center">Ansehen</th>
-                                            <th scope="col" class="align-middle text-center">Löschen</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="fs-6">
-                                        <tr *ngFor="let userFile of files">
-                                            <td class="align-middle text-truncate" style="max-width: 500px;">
-                                                {{ userFile.fileName }}
-                                            </td>
-                                            <td class="align-middle">{{ userFile.game }}</td>
-                                            <td class="align-middle text-center">
-                                                <div class="d-flex justify-content-center align-items-center">
-                                                    <button class="btn btn-outline-success" (click)="downloadFile(member.id, userFile.fileName)">
-                                                        <i class="fa fa-download"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <div class="d-flex justify-content-center align-items-center">
-                                                    <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#pdfPreviewModal"
-                                                            (click)="loadPdf(member.id, userFile.fileName)">
-                                                        <i class="fa fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <div class="d-flex justify-content-center align-items-center">
-                                                    <button class="btn btn-outline-danger" (click)="deleteFile(member.id, userFile.fileName)">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div *ngIf="games$ | async as games">
+                                    <div class="table-responsive" *ngFor="let gameFiles of games; let i = index">
+                                        <hr class="bg-danger border-2 border-top border-info">
+                                        <table class="table table-sm table-hover caption-top">
+                                            <caption>{{gameFiles?.game}}</caption>
+                                            <thead class="table-light fs-6">
+                                            <tr>
+                                                <th scope="col" class="align-middle col-8">Name</th>
+                                                <th scope="col" class="align-middle">Spiel</th>
+                                                <th scope="col" class="align-middle text-center">Download</th>
+                                                <th scope="col" class="align-middle text-center">Ansehen</th>
+                                                <th scope="col" class="align-middle text-center">Löschen</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                            <tr *ngFor="let file of gameFiles.files">
+                                                <td class="align-middle text-truncate" style="max-width: 500px;">
+                                                    {{ file?.fileName }}
+                                                </td>
+                                                <td class="align-middle">{{ file?.game }}</td>
+                                                <td class="align-middle text-center">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-success" (click)="downloadFile(member.id, file.fileName)">
+                                                            <i class="fa fa-download"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#pdfPreviewModal"
+                                                                (click)="loadPdf(member.id, file.fileName)">
+                                                            <i class="fa fa-eye"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-danger" (click)="deleteFile(member.id, file.fileName)">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

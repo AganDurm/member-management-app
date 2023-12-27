@@ -1,8 +1,8 @@
 export class ChangedMembersData {
     valueToUpdate: string;
-    userId: string;
+    userId: number;
 
-    constructor(valueToUpdate: string, userId: string) {
+    constructor(valueToUpdate: string, userId: number) {
         this.valueToUpdate = valueToUpdate;
         this.userId = userId;
     }

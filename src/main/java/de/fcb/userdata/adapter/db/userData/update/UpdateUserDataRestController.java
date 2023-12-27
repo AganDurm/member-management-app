@@ -1,7 +1,5 @@
 package de.fcb.userdata.adapter.db.userData.update;
 
-import static de.fcb.userdata.adapter.db.utils.UserConstants.CROSS_ORIGIN;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings("MissingJavadoc")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(CROSS_ORIGIN)
+@CrossOrigin("http://localhost:4200")
 public class UpdateUserDataRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateUserDataRestController.class);
 
@@ -35,21 +33,21 @@ public class UpdateUserDataRestController {
     private final UserDataService userDataService;
 
     @PutMapping(UPDATE_USER_ACTIVE_STATUS)
-    public ResponseEntity<ApiResponse> updateUserActiveStatus(@RequestBody final String userId) {
+    public ResponseEntity<ApiResponse> updateUserActiveStatus(@RequestBody final Long userId) {
         try {
             this.userDataService.toggleUserActiveStatus(userId);
 
-            return ResponseEntity.ok(new ApiResponse("Der Status für " + userId + "erfolgreich geändert."));
+            return ResponseEntity.ok(new ApiResponse("Der Status für das Mitglied erfolgreich geändert."));
         } catch (final Exception e) {
             e.printStackTrace();
             LOGGER.error("Error updating user active status for {}", userId);
-            return ResponseEntity.badRequest().body(new ApiResponse("Fehler: Der Status für " + userId + " wurde nicht geändert."));
+            return ResponseEntity.badRequest().body(new ApiResponse("Fehler: Der Status für das Mitglied wurde nicht geändert."));
         }
     }
 
     @PutMapping(UPDATE_USERNAME)
     public ResponseEntity<ApiResponse> updateUsername(@RequestBody final UserDataUpdateRequest request) {
-        final String userId = request.getUserId();
+        final Long userId = request.getUserId();
         final String username = request.getValueToUpdate();
 
         try {
@@ -65,7 +63,7 @@ public class UpdateUserDataRestController {
 
     @PutMapping(UPDATE_KUNDENNUMMER)
     public ResponseEntity<ApiResponse> updateKundennummer(@RequestBody final UserDataUpdateRequest request) {
-        final String userId = request.getUserId();
+        final Long userId = request.getUserId();
         final String kundennummer = request.getValueToUpdate();
 
         try {
@@ -81,7 +79,7 @@ public class UpdateUserDataRestController {
 
     @PutMapping(UPDATE_MITGLIEDSNUMMER)
     public ResponseEntity<ApiResponse> updateMitgliedsnummer(@RequestBody final UserDataUpdateRequest request) {
-        final String userId = request.getUserId();
+        final Long userId = request.getUserId();
         final String mitgliedsnummer = request.getValueToUpdate();
 
         try {
@@ -97,7 +95,7 @@ public class UpdateUserDataRestController {
 
     @PutMapping(UPDATE_PASSWORD)
     public ResponseEntity<ApiResponse> updatePassword(@RequestBody final UserDataUpdateRequest request) {
-        final String userId = request.getUserId();
+        final Long userId = request.getUserId();
         final String password = request.getValueToUpdate();
 
         try {

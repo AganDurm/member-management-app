@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDataUpdateRequest {
-    private String userId;
+    private Long userId;
     private String valueToUpdate;
 }

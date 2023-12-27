@@ -1,7 +1,6 @@
 package de.fcb.userdata.adapter.db.userFiles.delete;
 
 import static de.fcb.userdata.adapter.db.utils.UserConstants.CLASSPATH_RESOURCES_USER_FILES;
-import static de.fcb.userdata.adapter.db.utils.UserConstants.CROSS_ORIGIN;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings("MissingJavadoc")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(CROSS_ORIGIN)
+@CrossOrigin("http://localhost:4200")
 public class DeleteUserFilesRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserFilesRestController.class);
 
@@ -31,7 +30,7 @@ public class DeleteUserFilesRestController {
     private final UserFileService userFileService;
 
     @DeleteMapping(USER_DELETE_FILE_BY_USER_ID_RESOURCE_URL)
-    public ResponseEntity<ApiResponse> deleteFile(@PathVariable final String memberId, @PathVariable final String fileName) {
+    public ResponseEntity<ApiResponse> deleteFile(@PathVariable final Long memberId, @PathVariable final String fileName) {
         try {
             final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + memberId;
             final Path directory = Paths.get(uploadDirectory);

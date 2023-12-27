@@ -13,7 +13,7 @@ import jakarta.annotation.Nonnull;
  */
 @SuppressWarnings({ "SqlDialectInspection", "SqlResolve", "NullableProblems" })
 @Repository
-public interface UserDataRepository extends JpaRepository<UserData, String> {
+public interface UserDataRepository extends JpaRepository<UserData, Long> {
 
     @Nonnull
     @Override

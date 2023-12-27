@@ -10,5 +10,4 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserConstants {
     public static final String CLASSPATH_RESOURCES_USER_FILES = "classpath:/resources/user_files/";
-    public static final String CROSS_ORIGIN = "http://localhost:4200";
 }

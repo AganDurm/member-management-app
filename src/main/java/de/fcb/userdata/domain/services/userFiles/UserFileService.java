@@ -30,15 +30,15 @@ public class UserFileService {
         this.userFileRepository.saveAll(userFiles);
     }
 
-    public List<UserFile> getUserFilesByUserId(final String id) {
+    public List<UserFile> getUserFilesByUserId(final Long id) {
         return this.userFileRepository.findByUserDataId(id);
     }
 
-    public List<UserFile> getUserFilesByMemberIdAndGame(final String memberId, final String game) {
+    public List<UserFile> getUserFilesByMemberIdAndGame(final Long memberId, final String game) {
         return this.userFileRepository.findByUserDataIdAndGame(memberId, game);
     }
 
-    public UserFile findFirstByUserDataIdAndFileName(final String userId, final String fileName) {
+    public UserFile findFirstByUserDataIdAndFileName(final Long userId, final String fileName) {
         return this.userFileRepository.findFirstByUserDataIdAndFileName(userId, fileName);
     }
 
@@ -46,7 +46,7 @@ public class UserFileService {
         return this.userFileRepository.findById(fileId).orElse(null);
     }
 
-    public void deleteFile(final String userId, final String fileName) {
+    public void deleteFile(final Long userId, final String fileName) {
         this.userFileRepository.deleteByUserDataIdAndFileName(userId, fileName);
     }
 

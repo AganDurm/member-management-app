@@ -30,11 +30,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   pdfUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl("");
   selectedFiles: any[] = [];
   messages: string[] = [];
-  memberId: string | null = '';
+  memberId: number | null = 0;
   uniqueGameNames: string[] = [];
   games$: Observable<GameFiles[]> = of([]);
   member: Member = {
-    id: '',
+    id: 0,
+    email: '',
     username: '',
     password: '',
     active: false,
@@ -63,7 +64,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
     this.messageService.getMessages().subscribe(messages => this.messages = messages);
 
-    this.memberId = this.route.snapshot.paramMap.get('id');
+    this.memberId = parseFloat(this.route.snapshot.paramMap.get('id') as string);
     if (this.memberId) {
       this.memberSubscription = this.apiService.findById(this.memberId).subscribe({
         next: (data: Member) => {
@@ -77,14 +78,14 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
             error: () => this.messageService.displayMessage('Dateien konnten nicht geladen werden.')
           });
         },
-        error: () => this.messageService.displayMessage('Mitglieder konnten nicht geladen werden.')
+        error: () => this.messageService.displayMessage('Mitglied konnten nicht geladen werden.')
       });
     }
 
     this.loadingService.hide();
   }
 
-  toggleEdit(field: keyof EditStates, newValue: string, userId: string): void {
+  toggleEdit(field: keyof EditStates, newValue: string, userId: number): void {
     this.editStates[field] = !this.editStates[field];
 
     if (!this.editStates[field]) {
@@ -153,12 +154,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.hide();
   }
 
-  loadPdf(memberId: string, fileName: string): void {
+  loadPdf(memberId: number, fileName: string): void {
     const unsafeUrl = "http://localhost:8080/members/" + memberId + "/" + fileName + "/preview";
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
   }
 
-  downloadFile(userId: string, fileName: string): void {
+  downloadFile(userId: number, fileName: string): void {
     this.loadingService.show();
 
     this.apiService.downloadFileByUserId(userId, fileName).subscribe({
@@ -172,7 +173,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.hide();
   }
 
-  deleteFile(userId: string, fileName: string): void {
+  deleteFile(userId: number, fileName: string): void {
     this.apiService.deletePdfFileByMemberIdAndFileName(userId, fileName).subscribe({
       next: (respones) => {
         this.files = this.files.filter(item => item.fileName !== fileName);
@@ -215,7 +216,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.hide();
   }
 
-  loadAllGamesFiles(games: string[], memberId: string): void {
+  loadAllGamesFiles(games: string[], memberId: number): void {
     this.loadingService.show();
 
     const gameFilesObservables = games.map(game =>

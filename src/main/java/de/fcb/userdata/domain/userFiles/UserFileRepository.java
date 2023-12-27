@@ -18,13 +18,13 @@ import de.fcb.userdata.domain.userFiles.models.UserFile;
 @Repository
 public interface UserFileRepository extends JpaRepository<UserFile, Long> {
 
-    List<UserFile> findByUserDataId(final String userId);
-    List<UserFile> findByUserDataIdAndGame(final String userId, final String game);
+    List<UserFile> findByUserDataId(final Long userId);
+    List<UserFile> findByUserDataIdAndGame(final Long userId, final String game);
 
-    UserFile findFirstByUserDataIdAndFileName(final String userId, final String fileName);
+    UserFile findFirstByUserDataIdAndFileName(final Long userId, final String fileName);
 
     @Transactional
     @Modifying
     @Query("DELETE FROM UserFile uf WHERE uf.userData.id = :userId AND uf.fileName = :fileName")
-    void deleteByUserDataIdAndFileName(@Param("userId") String userId, @Param("fileName") String fileName);
+    void deleteByUserDataIdAndFileName(@Param("userId") Long userId, @Param("fileName") String fileName);
 }

@@ -14,6 +14,7 @@ import {PreloaderComponent} from '../preloader/preloader.component';
   selector: 'app-members',
   standalone: true,
   imports: [SharedModule, FilterMembers, PreloaderComponent],
+  providers: [LoadingService],
   templateUrl: './members.component.html',
   styleUrl: './members.component.less'
 })
@@ -27,7 +28,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   inactiveFilter: boolean = false;
   isLoading: boolean = false;
 
-  memberToDeleteIndex: string = '';
+  memberToDeleteIndex: number = 0;
 
   private subscription: Subscription = new Subscription();
   private messageSubscription: Subscription = new Subscription();
@@ -95,7 +96,7 @@ export class MembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteMember(memberId: string): void {
+  deleteMember(memberId: number): void {
     this.loadingService.show();
 
     this.apiService.deleteMemberById(memberId).subscribe({

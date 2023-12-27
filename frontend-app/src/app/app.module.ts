@@ -13,34 +13,32 @@ import {FilterMembers} from './filter-members.pipe';
 import {FilterUserFile} from './filter-user-file.pipe';
 import {MembersComponent} from './members/members.component';
 import {MemberDetailComponent} from './member-detail/member-detail.component';
-import { PathLocationStrategy, LocationStrategy } from '@angular/common';
-import {RouterLink} from '@angular/router';
+
+
 
 @NgModule({
   declarations: [
-    AppComponent,
     PreloaderComponent,
     UploaderComponent,
     FilterMembers,
     FilterUserFile,
     MembersComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     SharedModule,
+    AppRoutingModule
   ],
   exports: [
-    SharedModule,
-    RouterLink
+    SharedModule
   ],
   providers: [
     ApiService,
     LoadingService,
     ResponseMessageService,
-    {provide: LocationStrategy, useClass: PathLocationStrategy},
     provideHttpClient(withFetch())
   ],
   bootstrap: [ AppComponent ]

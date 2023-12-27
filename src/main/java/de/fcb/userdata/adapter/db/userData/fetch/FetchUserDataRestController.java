@@ -1,7 +1,5 @@
 package de.fcb.userdata.adapter.db.userData.fetch;
 
-import static de.fcb.userdata.adapter.db.utils.UserConstants.CROSS_ORIGIN;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +43,7 @@ public class FetchUserDataRestController {
     }
 
     @GetMapping(FETCH_USER_DATA_BY_USER_ID)
-    public ResponseEntity<UserData> fetchUserData(@PathVariable final String userId) {
+    public ResponseEntity<UserData> fetchUserData(@PathVariable final Long userId) {
         try {
             final Optional<UserData> userDataAll = this.userDataService.findById(userId);
             return userDataAll.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());

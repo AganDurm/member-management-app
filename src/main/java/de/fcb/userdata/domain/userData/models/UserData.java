@@ -2,6 +2,8 @@ package de.fcb.userdata.domain.userData.models;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -24,9 +26,11 @@ import lombok.Setter;
 @Table(name = "userInfo")
 public class UserData {
     @Id
-    @Nonnull
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Nonnull
+    private String email;
     private String username;
     private String password;
     private boolean active;

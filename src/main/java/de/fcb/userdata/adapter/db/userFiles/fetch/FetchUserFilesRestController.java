@@ -1,7 +1,6 @@
 package de.fcb.userdata.adapter.db.userFiles.fetch;
 
 import static de.fcb.userdata.adapter.db.utils.UserConstants.CLASSPATH_RESOURCES_USER_FILES;
-import static de.fcb.userdata.adapter.db.utils.UserConstants.CROSS_ORIGIN;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -31,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings("MissingJavadoc")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(CROSS_ORIGIN)
+@CrossOrigin("http://localhost:4200")
 public class FetchUserFilesRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FetchUserFilesRestController.class);
 
@@ -43,7 +42,7 @@ public class FetchUserFilesRestController {
     private final UserFileService userFileService;
 
     @GetMapping(FETCH_USER_FILES_BY_USER_ID_RESOURCE_URL)
-    public ResponseEntity<List<UserFile>> loadAllFilesByUserId(@PathVariable("userId") final String userId) {
+    public ResponseEntity<List<UserFile>> loadAllFilesByUserId(@PathVariable("userId") final Long userId) {
         try {
             final List<UserFile> userFiles = this.userFileService.getUserFilesByUserId(userId);
             return ResponseEntity.ok(userFiles);
@@ -54,7 +53,7 @@ public class FetchUserFilesRestController {
     }
 
     @GetMapping(FETCH_USER_FILES_BY_USER_ID_AND_GAME_RESOURCE_URL)
-    public ResponseEntity<List<UserFile>> loadAllFilesByUserIdAndGame(@PathVariable("memberId") final String memberId,
+    public ResponseEntity<List<UserFile>> loadAllFilesByUserIdAndGame(@PathVariable("memberId") final Long memberId,
                                                                       @PathVariable("game") final String game) {
         try {
             final List<UserFile> userFiles = this.userFileService.getUserFilesByMemberIdAndGame(memberId, game);

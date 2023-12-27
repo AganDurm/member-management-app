@@ -30,7 +30,7 @@ public class UserDataService {
         return this.userRepository.findAll().size();
     }
 
-    public Optional<UserData> findById(final String id) {
+    public Optional<UserData> findById(final Long id) {
         return this.userRepository.findById(id);
     }
 
@@ -38,7 +38,7 @@ public class UserDataService {
         this.userRepository.saveAll(userData);
     }
 
-    public void toggleUserActiveStatus(final String userId) {
+    public void toggleUserActiveStatus(final Long userId) {
         final Optional<UserData> existingUser = this.userRepository.findById(userId);
 
         if (existingUser.isPresent()) {
@@ -47,7 +47,7 @@ public class UserDataService {
         }
     }
 
-    public void changeUsernameByUserId(final String userId, final String username) {
+    public void changeUsernameByUserId(final Long userId, final String username) {
         final Optional<UserData> existingUser = this.userRepository.findById(userId);
 
         if (existingUser.isPresent()) {
@@ -57,7 +57,7 @@ public class UserDataService {
         }
     }
 
-    public void changeKundennummerByUserId(final String userId, final String kundennummer) {
+    public void changeKundennummerByUserId(final Long userId, final String kundennummer) {
         final Optional<UserData> existingUser = this.userRepository.findById(userId);
 
         if (existingUser.isPresent()) {
@@ -67,7 +67,7 @@ public class UserDataService {
         }
     }
 
-    public void changeMitgliedsnummerByUserId(final String userId, final String mitgliedsnummer) {
+    public void changeMitgliedsnummerByUserId(final Long userId, final String mitgliedsnummer) {
         final Optional<UserData> existingUser = this.userRepository.findById(userId);
 
         if (existingUser.isPresent()) {
@@ -77,7 +77,7 @@ public class UserDataService {
         }
     }
 
-    public void changePasswordByUserId(final String userId, final String password) {
+    public void changePasswordByUserId(final Long userId, final String password) {
         final Optional<UserData> existingUser = this.userRepository.findById(userId);
 
         if (existingUser.isPresent()) {
@@ -87,7 +87,7 @@ public class UserDataService {
         }
     }
 
-    public void deleteUserById(final String userId) {
+    public void deleteUserById(final Long userId) {
         this.userRepository.deleteById(userId);
     }
 

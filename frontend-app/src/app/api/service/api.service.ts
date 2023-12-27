@@ -58,15 +58,15 @@ export class ApiService {
     return this.http.post<string>(this.excelUploadUrl, formData);
   }
 
-  public uploadPdfFiles(formData: FormData, memberId: string | null): Observable<File[]> {
+  public uploadPdfFiles(formData: FormData, memberId: number | null): Observable<File[]> {
     return this.http.post<File[]>(this.pdfUploadUrl + memberId + '/pdf', formData)
   }
 
-  public findAllPdfFilesByMemberId(memberId: string | null): Observable<File[]> {
+  public findAllPdfFilesByMemberId(memberId: number | null): Observable<File[]> {
     return this.http.get<File[]>(this.findAllFilesByMemeberIdUrl + memberId + '/files');
   }
 
-  public findAllFilesByMemeberIdAndGame(memberId: string, game: string): Observable<File[]> {
+  public findAllFilesByMemeberIdAndGame(memberId: number, game: string): Observable<File[]> {
     return this.http.get<File[]>(this.findAllFilesByMemeberIdAndGameUrl + memberId + "/" + game + "/files")
   }
 
@@ -78,11 +78,11 @@ export class ApiService {
     return this.http.get<Member[]>(this.membersUrl);
   }
 
-  public findById(memberId: string): Observable<Member> {
+  public findById(memberId: number): Observable<Member> {
     return this.http.get<Member>(this.memberUrl + memberId);
   }
 
-  public updateMemberActiveStatus(memberId: string): Observable<ApiResponse> {
+  public updateMemberActiveStatus(memberId: number): Observable<ApiResponse> {
     return this.http.put<ApiResponse>(this.updateMemberActiveStatusUrl, memberId);
   }
 
@@ -102,7 +102,7 @@ export class ApiService {
     return this.http.put<ApiResponse>(this.updateMemberMitgliedsnummerUrl, changedMembersData);
   }
 
-  public deleteMemberById(memberId: string): Observable<ApiResponse> {
+  public deleteMemberById(memberId: number): Observable<ApiResponse> {
     return this.http.delete<ApiResponse>(this.deleteMemberByIdUrl + memberId);
   }
 
@@ -110,11 +110,11 @@ export class ApiService {
     return this.http.delete<ApiResponse>(this.deleteAllMembersUrl);
   }
 
-  public downloadFileByUserId(memberId: string, fileName: string): Observable<Blob> {
+  public downloadFileByUserId(memberId: number, fileName: string): Observable<Blob> {
     return this.http.get<Blob>(this.downloadFileByUserIdUrl + memberId + "/" + fileName + "/download", { responseType: 'blob' as 'json' });
   }
 
-  public deletePdfFileByMemberIdAndFileName(memberId: string, fileName: string): Observable<ApiResponse> {
+  public deletePdfFileByMemberIdAndFileName(memberId: number, fileName: string): Observable<ApiResponse> {
     const url = this.deletePdfFileByMemberIdAndFileNameUrl + memberId + '/' + fileName + '/' + 'delete';
     return this.http.delete<ApiResponse>(url);
   }

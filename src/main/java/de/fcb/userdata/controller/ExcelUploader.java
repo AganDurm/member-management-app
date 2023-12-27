@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -63,13 +62,14 @@ public class ExcelUploader {
             for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
                 final Row row = sheet.getRow(rowIndex);
 
-                final Cell secondCell = row.getCell(1);
-                final String id = secondCell.toString();
+                final Cell emailCell = row.getCell(1);
+                final String email = emailCell.toString();
 
-                LOGGER.info("Check if id {} is blank", id);
-                if(!id.isBlank()) {
+                LOGGER.info("Check if email {} is blank", email);
+                if(!email.isBlank()) {
                     final UserData userData = UserData.builder()
-                            .id(id)
+                            .id(null)
+                            .email(email)
                             .username(checkCellForNull(row.getCell(0)))
                             .password(checkCellForNull(row.getCell(2)))
                             .active(true)

@@ -1,7 +1,6 @@
 package de.fcb.userdata.adapter.db.userFiles.create;
 
 import static de.fcb.userdata.adapter.db.utils.UserConstants.CLASSPATH_RESOURCES_USER_FILES;
-import static de.fcb.userdata.adapter.db.utils.UserConstants.CROSS_ORIGIN;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import de.fcb.userdata.adapter.api.response.ApiResponse;
 import de.fcb.userdata.adapter.db.userFiles.create.exceptions.DirectoryCreationException;
 import de.fcb.userdata.domain.services.userData.UserDataService;
 import de.fcb.userdata.domain.services.userFiles.UserFileService;
@@ -48,7 +46,7 @@ public class CreateUserFilesRestController {
 
     @SuppressWarnings("FeatureEnvy")
     @PostMapping(UPLOAD_USER_FILE_FOR_USER_RESOURCE_URL)
-    public ResponseEntity<List<UserFile>> uploadFile(@PathVariable("memberId") final String memberId, @RequestParam("files") final MultipartFile[] files,
+    public ResponseEntity<List<UserFile>> uploadFile(@PathVariable("memberId") final Long memberId, @RequestParam("files") final MultipartFile[] files,
                                                 @RequestParam("game") final String game) {
         try {
             final List<UserFile> userFiles = new ArrayList<>();
@@ -84,7 +82,7 @@ public class CreateUserFilesRestController {
         }
     }
 
-    private File createDirectoryForUserByUserId(final String userId) {
+    private File createDirectoryForUserByUserId(final Long userId) {
         final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + userId;
         final File directory = new File(uploadDirectory);
         if (!directory.exists()) {

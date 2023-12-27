@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {firstValueFrom, Subscription} from 'rxjs';
 import {LoadingService} from '../loading.service';
 import {ApiService} from '../api/service/api.service';
 import {ResponseMessageService} from '../response-message.service';
@@ -52,7 +52,7 @@ export class UploaderComponent implements OnInit, OnDestroy {
     formData.append('file', this.selectedFile);
 
     try {
-      await this.apiService.uploadExcelFile(formData).toPromise();
+      await firstValueFrom(this.apiService.uploadExcelFile(formData));
       this.router.navigate(['/members']).then(() => {});
       this.messageService.displayMessage("Upload war erfolgreich.");
     } catch (error) {

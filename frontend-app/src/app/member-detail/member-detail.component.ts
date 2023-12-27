@@ -29,6 +29,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   selectedFiles: any[] = [];
   messages: string[] = [];
   memberId: string | null = '';
+  uniqueGameNames: string[] = [];
   member: Member = {
     id: '',
     username: '',
@@ -46,7 +47,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   game: string = '';
   files: File[] = [];
 
-  private subscription: Subscription = new Subscription();
+  private memberSubscription: Subscription = new Subscription();
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService,
@@ -61,11 +62,14 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
     this.memberId = this.route.snapshot.paramMap.get('id');
     if (this.memberId) {
-      this.subscription = this.apiService.findById(this.memberId).subscribe({
+      this.memberSubscription = this.apiService.findById(this.memberId).subscribe({
         next: (data: Member) => {
           this.member = data;
           this.apiService.findAllPdfFilesByMemberId(this.memberId).subscribe({
-            next: (files: File[]) => this.files = files,
+            next: (files: File[]) => {
+              this.files = files;
+              this.uniqueGameNames = this.resolveUniqueGames(this.files);
+            },
             error: () => this.messageService.displayMessage('Dateien konnten nicht geladen werden.')
           });
         },
@@ -168,6 +172,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.apiService.deletePdfFileByMemberIdAndFileName(userId, fileName).subscribe({
       next: (respones) => {
         this.files = this.files.filter(item => item.fileName !== fileName);
+        this.uniqueGameNames = this.resolveUniqueGames(this.files);
         this.messageService.displayMessage(respones.message);
       },
       error: (error) => this.messageService.displayMessage(error.message)
@@ -177,28 +182,56 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   uploadFile(): void {
     this.loadingService.show();
 
-    const formData: any = new FormData();
-    formData.append('game', this.game);
+    if(this.game !== '' && this.selectedFiles.length > 0) {
+      const formData: any = new FormData();
+      formData.append('game', this.game);
 
-    for (let i = 0; i < this.selectedFiles.length; i++) {
-      formData.append('files', this.selectedFiles[i]);
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        formData.append('files', this.selectedFiles[i]);
+      }
+
+      this.apiService.uploadPdfFiles(formData, this.memberId).subscribe({
+        next: (files) => {
+          this.files = files;
+          this.uniqueGameNames = this.resolveUniqueGames(this.files);
+        },
+        error: () => this.messageService.displayMessage('Error!')
+      });
+    } else {
+      if(this.game === '') {
+        this.messageService.displayMessage('Fehler! Bitte das Spiel auswählen!');
+      } else {
+        this.messageService.displayMessage('Fehler! Bitte mindestens eine Datei auswählen!');
+      }
     }
 
-    this.apiService.uploadPdfFiles(formData, this.memberId).subscribe({
-      next: (data) => this.files = data,
-      error: () => this.messageService.displayMessage('Error!')
-    });
-
     this.loadingService.hide();
+  }
+
+  public findFilesByMemberIdAndGame(memberId: string, game: string) {
+    this.apiService.findAllFilesByMemeberIdAndGame(memberId, game).subscribe({
+      next: () => {},
+      error: () => {}
+    })
   }
 
   public onFilesSelected(event: any) {
     this.selectedFiles = event.target.files;
   }
 
+  resolveUniqueGames(userFiles: File[]) {
+    if(userFiles.length > 0) {
+      const games = userFiles.map(userFile => userFile.game);
+      const uniqueGames = new Set(games);
+      return Array.from(uniqueGames);
+    } else {
+      return [];
+    }
+  };
+
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.memberSubscription) {
+      this.memberSubscription.unsubscribe();
     }
   }
 }

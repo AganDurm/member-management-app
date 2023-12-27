@@ -25,10 +25,10 @@ export class UploaderComponent implements OnInit, OnDestroy {
 
   @Output() uploadComplete = new EventEmitter<void>();
 
-  constructor(private loadingService: LoadingService,
-              private messageService: ResponseMessageService,
+  constructor(private router: Router,
               private apiService: ApiService,
-              private router: Router) {
+              private loadingService: LoadingService,
+              private messageService: ResponseMessageService) {
   }
 
   ngOnInit() {

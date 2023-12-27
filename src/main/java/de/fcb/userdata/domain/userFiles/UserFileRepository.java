@@ -19,6 +19,7 @@ import de.fcb.userdata.domain.userFiles.models.UserFile;
 public interface UserFileRepository extends JpaRepository<UserFile, Long> {
 
     List<UserFile> findByUserDataId(final String userId);
+    List<UserFile> findByUserDataIdAndGame(final String userId, final String game);
 
     UserFile findFirstByUserDataIdAndFileName(final String userId, final String fileName);
 

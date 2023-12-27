@@ -24,7 +24,8 @@ export class ApiService {
   private readonly updateMemberMitgliedsnummerUrl: string;
   private readonly deleteAllMembersUrl: string;
   private readonly deleteMemberByIdUrl: string;
-  private readonly findAllFilesByMemeberId: string;
+  private readonly findAllFilesByMemeberIdUrl: string;
+  private readonly findAllFilesByMemeberIdAndGameUrl: string;
 
   private readonly downloadFileByUserIdUrl: string;
   private readonly deletePdfFileByMemberIdAndFileNameUrl: string;
@@ -46,7 +47,8 @@ export class ApiService {
     this.updateMemberMitgliedsnummerUrl = this.memberUrl + 'updateMemberMitgliedsnummer';
     this.deleteAllMembersUrl = this.memberUrl + 'deleteAll';
     this.deleteMemberByIdUrl = this.memberUrl + 'delete/';
-    this.findAllFilesByMemeberId = this.memberUrl;
+    this.findAllFilesByMemeberIdUrl = this.memberUrl;
+    this.findAllFilesByMemeberIdAndGameUrl = this.memberUrl;
 
     this.downloadFileByUserIdUrl = this.memberUrl;
     this.deletePdfFileByMemberIdAndFileNameUrl = this.memberUrl;
@@ -61,7 +63,11 @@ export class ApiService {
   }
 
   public findAllPdfFilesByMemberId(memberId: string | null): Observable<File[]> {
-    return this.http.get<File[]>(this.findAllFilesByMemeberId + memberId + '/files');
+    return this.http.get<File[]>(this.findAllFilesByMemeberIdUrl + memberId + '/files');
+  }
+
+  public findAllFilesByMemeberIdAndGame(memberId: string, game: string): Observable<File[]> {
+    return this.http.get<File[]>(this.findAllFilesByMemeberIdAndGameUrl + memberId + "/" + game + "/files")
   }
 
   public countMembers(): Observable<number> {

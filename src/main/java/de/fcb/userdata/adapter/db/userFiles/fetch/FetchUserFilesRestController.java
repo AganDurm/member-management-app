@@ -36,6 +36,7 @@ public class FetchUserFilesRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FetchUserFilesRestController.class);
 
     public static final String FETCH_USER_FILES_BY_USER_ID_RESOURCE_URL = "/members/{userId}/files";
+    public static final String FETCH_USER_FILES_BY_USER_ID_AND_GAME_RESOURCE_URL = "/members/{memberId}/{game}/files";
     private static final String PREVIEW_PDF_RESOURCE_URL = "/members/{userId}/{filename:.+}/preview";
     private static final String DOWNLOAD_FILE_BY_USER_ID_AND_FILE_NAME_RESOURCE_URL = "/members/{userId}/{filename:.+}/download";
 
@@ -45,6 +46,18 @@ public class FetchUserFilesRestController {
     public ResponseEntity<List<UserFile>> loadAllFilesByUserId(@PathVariable("userId") final String userId) {
         try {
             final List<UserFile> userFiles = this.userFileService.getUserFilesByUserId(userId);
+            return ResponseEntity.ok(userFiles);
+        } catch (final Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping(FETCH_USER_FILES_BY_USER_ID_AND_GAME_RESOURCE_URL)
+    public ResponseEntity<List<UserFile>> loadAllFilesByUserIdAndGame(@PathVariable("memberId") final String memberId,
+                                                                      @PathVariable("game") final String game) {
+        try {
+            final List<UserFile> userFiles = this.userFileService.getUserFilesByMemberIdAndGame(memberId, game);
             return ResponseEntity.ok(userFiles);
         } catch (final Exception exception) {
             exception.printStackTrace();

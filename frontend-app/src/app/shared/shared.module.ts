@@ -8,17 +8,17 @@ import {ResponseMessageService} from '../response-message.service';
 import {HttpClientModule, provideHttpClient, withFetch} from '@angular/common/http';
 
 
-
 @NgModule({
   imports: [
+    HttpClientModule,
     CommonModule,
     FormsModule,
-    HttpClientModule
+    RouterModule
   ],
   exports: [
+    HttpClientModule,
     CommonModule,
     FormsModule,
-    HttpClientModule,
     RouterModule
   ],
   providers: [

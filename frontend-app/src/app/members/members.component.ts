@@ -6,22 +6,16 @@ import {ApiService} from '../api/service/api.service';
 import {LoadingService} from '../loading.service';
 import {ResponseMessageService} from '../response-message.service';
 import {ApiResponse} from '../api/models/api-response';
-import {SharedModule} from '../shared/shared.module';
-import {FilterMembers} from '../filter-members.pipe';
-import {PreloaderComponent} from '../preloader/preloader.component';
+
 
 @Component({
   selector: 'app-members',
-  standalone: true,
-  imports: [SharedModule, FilterMembers, PreloaderComponent],
-  providers: [LoadingService],
   templateUrl: './members.component.html',
   styleUrl: './members.component.less'
 })
 export class MembersComponent implements OnInit, OnDestroy {
   members: Member[] = [];
   filteredMembers: Member[] = [];
-
   messages: string[] = [];
   searchText: string = '';
   activeFilter: boolean = false;
@@ -37,8 +31,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private apiService: ApiService,
               private loadingService: LoadingService,
-              private messageService: ResponseMessageService) {
-  }
+              private messageService: ResponseMessageService) {}
 
   ngOnInit() {
     this.loadingService.show();
@@ -125,7 +118,7 @@ export class MembersComponent implements OnInit, OnDestroy {
         this.router.navigate(['/upload']).then(() => {});
       },
       error: (error) => this.messageService.displayMessage(error.message)
-  });
+    });
 
     this.loadingService.hide();
   }

@@ -9,7 +9,7 @@
                     <i class="fa fa-trash"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-light">
             {{members.length}} <span class="visually-hidden">Anzahl</span>
-          </span>
+                    </span>
                 </button>
             </div>
         </div>
@@ -20,13 +20,13 @@
                         <label for="activeFilter">Aktive</label>
                         <input type="checkbox" id="activeFilter" class="mx-2"
                                (click)="toggleActiveFilter()"
-                               [(ngModel)]="activeFilter"/>
+                               [ngModel]="activeFilter"/>
                     </div>
                     <div class="input-group-text mx-2">
                         <label for="inactiveFilter">Gesperrte</label>
                         <input type="checkbox" id="inactiveFilter" class="mx-2"
                                (click)="toggleInactiveFilter()"
-                               [(ngModel)]="inactiveFilter"/>
+                               [ngModel]="inactiveFilter"/>
                     </div>
                 </div>
             </div>
@@ -48,10 +48,11 @@
             <div class="col-12 col-lg-4 col-md-6 pb-2" *ngFor="let member of filteredMembers | filterMembers: searchText; let i = index">
                 <div class="card mb-3" style="height: 100%;">
                     <div class="card-body pt-4">
-                        <h5 class="card-title">E-Mail: {{member.email}}</h5>
-                        <p class="card-text">Password: {{member.password}}</p>
-                        <p class="card-text">Name: {{member.username}}</p>
-                        <p class="card-text">Mitgliedsnummer: {{member.mitgliedsnummer}}</p>
+                        <h5 class="card-title">E-Mail: {{member?.email}}</h5>
+                        <p class="card-text">Password: {{member?.password}}</p>
+                        <p class="card-text">Name: {{member?.username}}</p>
+                        <p class="card-text">Mitgliedsnummer: {{member?.mitgliedsnummer}}</p>
+                        <p class="card-text" *ngIf="member?.cvc">CVC: {{member?.cvc}}</p>
                     </div>
                     <div class="card-footer">
                         <div class="row">

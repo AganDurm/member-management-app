@@ -73,8 +73,18 @@ public class ExcelUploader {
                             .username(checkCellForNull(row.getCell(0)))
                             .password(checkCellForNull(row.getCell(2)))
                             .active(true)
-                            .mitgliedsnummer(checkCellForNullAndDouble(row.getCell(9)))
-                            .kundennummer(checkCellForNullAndDouble(row.getCell(10)))
+                            .visaormc(checkCellForNull(row.getCell(3)))
+                            .cardnumber(checkCellForNull(row.getCell(4)))
+                            .month(checkCellForNullAndDouble(row.getCell(5)))
+                            .year(checkCellForNullAndDouble(row.getCell(6)))
+                            .cvc(checkCellForNullAndDouble(row.getCell(7)))
+                            .nameoncard(checkCellForNull(row.getCell(8)))
+                            .kundennummer(checkCellForNullAndDouble(row.getCell(9)))
+                            .mitgliedsnummer(checkCellForNullAndDouble(row.getCell(10)))
+                            .geb(checkCellForNull(row.getCell(11)))
+                            .street(checkCellForNull(row.getCell(12)))
+                            .plz(checkCellForNullAndDouble(row.getCell(13)))
+                            .city(checkCellForNull(row.getCell(14)))
                             .build();
                     userDataToSave.add(userData);
                 }

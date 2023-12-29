@@ -2,19 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LoadingService} from './loading.service';
 import {ResponseMessageService} from './response-message.service';
 import {Subscription} from 'rxjs';
-import {SharedModule} from './shared/shared.module';
-import {PreloaderComponent} from './preloader/preloader.component';
-import {RouterOutlet} from '@angular/router';
-import {ApiService} from './api/service/api.service';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.less',
-  standalone: true,
-  imports: [SharedModule, RouterOutlet, PreloaderComponent],
-  providers: [ResponseMessageService, LoadingService, ApiService],
+  styleUrl: './app.component.less'
 })
 export class AppComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;

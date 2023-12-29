@@ -22,6 +22,16 @@ export class ApiService {
   private readonly updateMemberPasswordUrl: string;
   private readonly updateMemberKundennummerUrl: string;
   private readonly updateMemberMitgliedsnummerUrl: string;
+  private readonly updateMemberCardNumberUrl: string;
+  private readonly updateMemberVisaOrMcUrl: string;
+  private readonly updateMemberMonthUrl: string;
+  private readonly updateMemberYearUrl: string;
+  private readonly updateMemberCvcUrl: string;
+  private readonly updateMemberNameOnCardUrl: string;
+  private readonly updateMemberGebUrl: string;
+  private readonly updateMemberPLZUrl: string;
+  private readonly updateMemberStreetUrl: string;
+  private readonly updateMemberCityUrl: string;
   private readonly deleteAllMembersUrl: string;
   private readonly deleteMemberByIdUrl: string;
   private readonly findAllFilesByMemeberIdUrl: string;
@@ -45,6 +55,16 @@ export class ApiService {
     this.updateMemberPasswordUrl = this.memberUrl + 'updateMemberPassword';
     this.updateMemberKundennummerUrl = this.memberUrl + 'updateMemberKundennummer';
     this.updateMemberMitgliedsnummerUrl = this.memberUrl + 'updateMemberMitgliedsnummer';
+    this.updateMemberCardNumberUrl = this.memberUrl + 'updateMemberCardNumber';
+    this.updateMemberVisaOrMcUrl = this.memberUrl + 'updateMemberVisaOrMc';
+    this.updateMemberMonthUrl = this.memberUrl + 'updateMemberMonth';
+    this.updateMemberYearUrl = this.memberUrl + 'updateMemberYear';
+    this.updateMemberCvcUrl = this.memberUrl + 'updateMemberCvc';
+    this.updateMemberNameOnCardUrl = this.memberUrl + 'updateMemberNameOnCard';
+    this.updateMemberGebUrl = this.memberUrl + 'updateMemberGeb';
+    this.updateMemberPLZUrl = this.memberUrl + 'updateMemberPLZ';
+    this.updateMemberStreetUrl = this.memberUrl + 'updateMemberStreet';
+    this.updateMemberCityUrl = this.memberUrl + 'updateMemberCity';
     this.deleteAllMembersUrl = this.memberUrl + 'deleteAll';
     this.deleteMemberByIdUrl = this.memberUrl + 'delete/';
     this.findAllFilesByMemeberIdUrl = this.memberUrl;
@@ -100,6 +120,46 @@ export class ApiService {
 
   public updateMemberMitgliedsnummer(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
     return this.http.put<ApiResponse>(this.updateMemberMitgliedsnummerUrl, changedMembersData);
+  }
+
+  public updateMemberCardNumber(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberCardNumberUrl, changedMembersData);
+  }
+
+  public updateMemberVisaOrMc(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberVisaOrMcUrl, changedMembersData);
+  }
+
+  public updateMemberMonth(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberMonthUrl, changedMembersData);
+  }
+
+  public updateMemberYear(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberYearUrl, changedMembersData);
+  }
+
+  public updateMemberCvc(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberCvcUrl, changedMembersData);
+  }
+
+  public updateMemberNameOnCard(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberNameOnCardUrl, changedMembersData);
+  }
+
+  public updateMemberGeb(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberGebUrl, changedMembersData);
+  }
+
+  public updateMemberPLZ(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberPLZUrl, changedMembersData);
+  }
+
+  public updateMemberStreet(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberStreetUrl, changedMembersData);
+  }
+
+  public updateMemberCity(changedMembersData: ChangedMembersData): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateMemberCityUrl, changedMembersData);
   }
 
   public deleteMemberById(memberId: number): Observable<ApiResponse> {

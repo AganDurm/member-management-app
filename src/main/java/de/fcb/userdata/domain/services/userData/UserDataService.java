@@ -34,6 +34,10 @@ public class UserDataService {
         return this.userRepository.findById(id);
     }
 
+    public UserData findByEmail(final String email) {
+        return this.userRepository.findByEmail(email);
+    }
+
     public void saveAll(final List<UserData> userData) {
         this.userRepository.saveAll(userData);
     }
@@ -83,6 +87,106 @@ public class UserDataService {
         if (existingUser.isPresent()) {
             final UserData user = existingUser.get();
             user.setPassword(password);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeCardNumberByUserId(final Long userId, final String cardNumber) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setCardnumber(cardNumber);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeVisaOrMc(final Long userId, final String visaormc) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setVisaormc(visaormc);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeYear(final Long userId, final String year) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setYear(year);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeMonth(final Long userId, final String month) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setMonth(month);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeCvc(final Long userId, final String cvc) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setCvc(cvc);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeNameOnCard(final Long userId, final String nameOnCard) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setNameoncard(nameOnCard);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeGeb(final Long userId, final String geb) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setGeb(geb);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changePLZ(final Long userId, final String plz) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setPlz(plz);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeStreet(final Long userId, final String street) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setStreet(street);
+            this.userRepository.save(user);
+        }
+    }
+
+    public void changeCity(final Long userId, final String city) {
+        final Optional<UserData> existingUser = this.userRepository.findById(userId);
+
+        if (existingUser.isPresent()) {
+            final UserData user = existingUser.get();
+            user.setCity(city);
             this.userRepository.save(user);
         }
     }

@@ -36,4 +36,14 @@ public class UserData {
     private boolean active;
     private String mitgliedsnummer;
     private String kundennummer;
+    private String cardnumber;
+    private String visaormc;
+    private String month;
+    private String year;
+    private String cvc;
+    private String nameoncard;
+    private String geb;
+    private String street;
+    private String plz;
+    private String city;
 }

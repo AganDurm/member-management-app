@@ -32,5 +32,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = "de.fcb.userdata")
 public class AppConfig {
-    // Bean definitions and additional configurations
 }

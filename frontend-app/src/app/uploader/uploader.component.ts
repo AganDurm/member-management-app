@@ -9,8 +9,6 @@ import {PreloaderComponent} from '../preloader/preloader.component';
 
 @Component({
   selector: 'app-uploader',
-  standalone: true,
-  imports: [SharedModule, PreloaderComponent],
   templateUrl: './uploader.component.html',
   styleUrl: './uploader.component.less'
 })

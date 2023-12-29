@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,15 +57,20 @@ public class CreateUserFilesRestController {
             for (final MultipartFile file : files) {
                 final UserFile fileByUser = this.userFileService.findFirstByUserDataIdAndFileName(memberId, file.getOriginalFilename());
                 if(fileByUser == null) {
+                    final Optional<UserData> memberById = this.userDataService.findById(memberId);
+                    final String regex = "[A-Z]{3}-[A-Z]{3}_\\d+_\\d+_\\d+";
+                    final Pattern pattern = Pattern.compile(regex);
+                    final Matcher matcher = pattern.matcher(Objects.requireNonNull(file.getOriginalFilename()));
                     final File directory = createDirectoryForUserByUserId(memberId);
-                    final String fileName = file.getOriginalFilename();
+                    final String fileName = extractName(file, matcher, memberById);
                     final File destinationFile = new File(directory, Objects.requireNonNull(fileName));
 
                     process(file, destinationFile);
 
                     final UserFile userFile = new UserFile();
-                    userFile.setFileName(file.getOriginalFilename());
+
                     userFile.setGame(game);
+                    userFile.setFileName(fileName);
                     user.ifPresent(userFile::setUserData);
 
                     userFiles.add(userFile);
@@ -79,6 +86,14 @@ public class CreateUserFilesRestController {
         } catch (final Exception exception) {
             exception.printStackTrace();
             return ResponseEntity.badRequest().body(this.userFileService.getUserFilesByUserId(memberId));
+        }
+    }
+
+    private String extractName(final MultipartFile file, final Matcher matcher, final Optional<UserData> memberById) {
+        if (memberById.isPresent() && matcher.find()) {
+            return memberById.get().getUsername().replace(" ", "_") + "_" + matcher.group();
+        } else {
+            return file.getOriginalFilename();
         }
     }
 

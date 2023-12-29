@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {UploaderComponent} from './uploader/uploader.component';
 import {MembersComponent} from './members/members.component';
 import {MemberDetailComponent} from './member-detail/member-detail.component';

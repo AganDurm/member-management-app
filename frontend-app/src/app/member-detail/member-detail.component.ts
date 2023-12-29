@@ -10,18 +10,12 @@ import {saveAs} from 'file-saver';
 import {ChangedMembersData} from '../model/changed-members-data';
 import {ApiResponse} from '../api/models/api-response';
 import {EditStates} from './models/editStates';
-import {SharedModule} from '../shared/shared.module';
-import {FilterUserFile} from '../filter-user-file.pipe';
-import {PreloaderComponent} from '../preloader/preloader.component';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {GameFiles} from './models/gameFiles';
 
 
 @Component({
   selector: 'app-member-detail',
-  standalone: true,
-  imports: [SharedModule, FilterUserFile, PreloaderComponent],
-  providers: [LoadingService],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.less'
 })
@@ -41,12 +35,32 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     active: false,
     mitgliedsnummer: '',
     kundennummer: '',
+    cardnumber: '',
+    visaormc: '',
+    month: '',
+    year: '',
+    cvc: '',
+    nameoncard: '',
+    geb: '',
+    street: '',
+    plz: '',
+    city: '',
   };
   editStates: EditStates = {
     username: false,
     mitgliedsnummer: false,
     kundennummer: false,
     password: false,
+    cardnumber: false,
+    visaormc: false,
+    month: false,
+    year: false,
+    cvc: false,
+    nameoncard: false,
+    geb: false,
+    street: false,
+    plz: false,
+    city: false,
   };
   game: string = '';
   files: File[] = [];
@@ -104,6 +118,36 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         case 'mitgliedsnummer':
           this.saveMitgliedsnummer(changedMembersData);
           break;
+        case 'cardnumber':
+          this.saveCardNumber(changedMembersData);
+          break;
+        case 'visaormc':
+          this.saveVisaOrMc(changedMembersData);
+          break;
+        case 'month':
+          this.saveMonth(changedMembersData);
+          break;
+        case 'year':
+          this.saveYear(changedMembersData);
+          break;
+        case 'cvc':
+          this.saveCvc(changedMembersData);
+          break;
+        case 'nameoncard':
+          this.saveNameOnCard(changedMembersData);
+          break;
+        case 'geb':
+          this.saveGeb(changedMembersData);
+          break;
+        case 'plz':
+          this.savePLZ(changedMembersData);
+          break;
+        case 'street':
+          this.saveStreet(changedMembersData);
+          break;
+        case 'city':
+          this.saveCity(changedMembersData);
+          break;
         default:
           console.warn(`Save method not implemented for field: ${field}`);
       }
@@ -147,6 +191,116 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.show();
 
     this.apiService.updateMemberMitgliedsnummer(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveCardNumber(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberCardNumber(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveVisaOrMc(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberVisaOrMc(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveMonth(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberMonth(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveYear(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberYear(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveCvc(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberCvc(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveNameOnCard(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberNameOnCard(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveGeb(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberGeb(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  savePLZ(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberPLZ(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveStreet(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberStreet(changedMembersData).subscribe({
+      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
+      error: (error) => this.messageService.displayMessage(error.message)
+    });
+
+    this.loadingService.hide();
+  }
+
+  saveCity(changedMembersData: ChangedMembersData): void {
+    this.loadingService.show();
+
+    this.apiService.updateMemberCity(changedMembersData).subscribe({
       next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
       error: (error) => this.messageService.displayMessage(error.message)
     });

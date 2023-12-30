@@ -1,6 +1,7 @@
 package de.fcb.userdata.domain.userData.models;
 
 import jakarta.annotation.Nonnull;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,7 +39,9 @@ public class UserData {
     private String kundennummer;
     private String cardnumber;
     private String visaormc;
+    @Column(name = "\"month\"")
     private String month;
+    @Column(name = "\"year\"")
     private String year;
     private String cvc;
     private String nameoncard;

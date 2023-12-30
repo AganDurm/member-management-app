@@ -1,6 +1,7 @@
 package de.fcb.userdata.adapter.db.userFiles.create;
 
 import static de.fcb.userdata.adapter.db.utils.UserConstants.CLASSPATH_RESOURCES_USER_FILES;
+import static de.fcb.userdata.utils.AppConstants.ROOT_ORIGIN;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings("MissingJavadoc")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(ROOT_ORIGIN)
 public class CreateUserFilesRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateUserFilesRestController.class);
 

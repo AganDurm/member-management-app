@@ -1,5 +1,7 @@
 package de.fcb.userdata.adapter.db.userData.update;
 
+import static de.fcb.userdata.utils.AppConstants.ROOT_ORIGIN;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings("MissingJavadoc")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(ROOT_ORIGIN)
 public class UpdateUserDataRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateUserDataRestController.class);
 

@@ -1,6 +1,7 @@
 package de.fcb.userdata.adapter.db.userFiles.delete;
 
 import static de.fcb.userdata.adapter.db.utils.UserConstants.CLASSPATH_RESOURCES_USER_FILES;
+import static de.fcb.userdata.utils.AppConstants.ROOT_ORIGIN;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings("MissingJavadoc")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(ROOT_ORIGIN)
 public class DeleteUserFilesRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserFilesRestController.class);
 

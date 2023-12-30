@@ -1,5 +1,7 @@
 package de.fcb.userdata.controller;
 
+import static de.fcb.userdata.utils.AppConstants.ROOT_ORIGIN;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings({ "FeatureEnvy", "LawOfDemeter", "MissingJavadoc" })
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(ROOT_ORIGIN)
 public class ExcelUploader {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUploader.class);
 

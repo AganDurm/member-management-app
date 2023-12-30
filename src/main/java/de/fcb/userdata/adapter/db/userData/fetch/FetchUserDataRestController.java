@@ -1,5 +1,7 @@
 package de.fcb.userdata.adapter.db.userData.fetch;
 
+import static de.fcb.userdata.utils.AppConstants.ROOT_ORIGIN;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @SuppressWarnings("MissingJavadoc")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(ROOT_ORIGIN)
 public class FetchUserDataRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FetchUserDataRestController.class);
 

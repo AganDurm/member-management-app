@@ -41,10 +41,10 @@ export class ApiService {
   private readonly deletePdfFileByMemberIdAndFileNameUrl: string;
 
   constructor(private http: HttpClient) {
-    this.membersUrl = 'http://localhost:8080/members';
-    this.memberUrl = 'http://localhost:8080/members/';
+    this.membersUrl = 'https://www.durmex.de/members';
+    this.memberUrl = 'https://www.durmex.de/members/';
 
-    this.uploadUrl = 'http://localhost:8080/upload/';
+    this.uploadUrl = 'https://www.durmex.de/upload/';
     this.excelUploadUrl = this.uploadUrl + 'excelUpload';
 
     this.pdfUploadUrl = this.uploadUrl;

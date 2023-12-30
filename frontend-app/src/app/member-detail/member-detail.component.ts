@@ -309,7 +309,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   loadPdf(memberId: number, fileName: string): void {
-    const unsafeUrl = "http://localhost:8080/members/" + memberId + "/" + fileName + "/preview";
+    const unsafeUrl = "https://member-management-application.onrender.com/members/" + memberId + "/" + fileName + "/preview";
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
   }
 

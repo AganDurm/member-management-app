@@ -10,10 +10,10 @@ import {ChangedMembersData} from '../../model/changed-members-data';
   providedIn: 'root'
 })
 export class ApiService {
+  private readonly rootOrigin: string;
   private readonly uploadUrl: string;
   private readonly excelUploadUrl: string;
   private readonly pdfUploadUrl: string;
-
   private readonly membersUrl: string;
   private readonly memberUrl: string;
   private readonly membersCountUrl: string;
@@ -36,19 +36,16 @@ export class ApiService {
   private readonly deleteMemberByIdUrl: string;
   private readonly findAllFilesByMemeberIdUrl: string;
   private readonly findAllFilesByMemeberIdAndGameUrl: string;
-
   private readonly downloadFileByUserIdUrl: string;
   private readonly deletePdfFileByMemberIdAndFileNameUrl: string;
 
   constructor(private http: HttpClient) {
-    this.membersUrl = 'https://member-management-application.onrender.com/members';
-    this.memberUrl = 'https://member-management-application.onrender.com/members/';
-
-    this.uploadUrl = 'https://member-management-application.onrender.com/upload/';
+    this.rootOrigin = 'http://localhost:8080';
+    this.membersUrl = this.rootOrigin + '/members';
+    this.memberUrl =  this.rootOrigin + '/members/';
+    this.uploadUrl = this.rootOrigin + '/upload/';
     this.excelUploadUrl = this.uploadUrl + 'excelUpload';
-
     this.pdfUploadUrl = this.uploadUrl;
-
     this.membersCountUrl = this.memberUrl + 'countMembers';
     this.updateMemberActiveStatusUrl = this.memberUrl + 'updateMemberActiveStatus';
     this.updateMemberUsernameUrl = this.memberUrl + 'updateMemberUsername';
@@ -69,7 +66,6 @@ export class ApiService {
     this.deleteMemberByIdUrl = this.memberUrl + 'delete/';
     this.findAllFilesByMemeberIdUrl = this.memberUrl;
     this.findAllFilesByMemeberIdAndGameUrl = this.memberUrl;
-
     this.downloadFileByUserIdUrl = this.memberUrl;
     this.deletePdfFileByMemberIdAndFileNameUrl = this.memberUrl;
   }

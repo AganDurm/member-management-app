@@ -39,6 +39,7 @@ public class FetchUserFilesRestController {
     public static final String FETCH_USER_FILES_BY_USER_ID_AND_GAME_RESOURCE_URL = "/members/{memberId}/{game}/files";
     private static final String PREVIEW_PDF_RESOURCE_URL = "/members/{userId}/{filename:.+}/preview";
     private static final String DOWNLOAD_FILE_BY_USER_ID_AND_FILE_NAME_RESOURCE_URL = "/members/{userId}/{filename:.+}/download";
+    private static final String DOWNLOAD_FILES_BY_GAME_RESOURCE_URL = "/members/{game}/download";
 
     private final UserFileService userFileService;
 

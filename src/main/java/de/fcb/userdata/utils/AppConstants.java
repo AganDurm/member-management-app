@@ -15,5 +15,5 @@ public class AppConstants {
             "|                `-◡◡-' `◡◡◡◡' `◡◡'   `◡◡`◡◡`◡◡' `◡◡◡◡''◡◡'  '◡◡'                      |\n" +
             "'◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡◡'\n";
 
-    public static final String ROOT_ORIGIN = "https://uma-forntend.onrender.com";
+    public static final String ROOT_ORIGIN = "http://localhost:4200";
 }

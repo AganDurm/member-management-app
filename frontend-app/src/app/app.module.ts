@@ -13,6 +13,8 @@ import {MembersComponent} from './members/members.component';
 import {MemberDetailComponent} from './member-detail/member-detail.component';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import {HomeComponent} from './home/home.component';
+import {OrdersComponent} from './orders/orders.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import {CommonModule} from '@angular/common';
     UploaderComponent,
     FilterMembers,
     MembersComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    HomeComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import {ApiResponse} from '../models/api-response';
 import {Member} from '../../model/member';
 import {File} from '../../model/file';
 import {ChangedMembersData} from '../../model/changed-members-data';
+import {Orders} from '../../model/orders';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class ApiService {
   private readonly excelUploadUrl: string;
   private readonly pdfUploadUrl: string;
   private readonly membersUrl: string;
+  private readonly ordersUrl: string;
+  private readonly createOrderUrl: string;
+  private readonly updateOrderUrl: string;
+  private readonly deleteOrderUrl: string;
   private readonly memberUrl: string;
   private readonly membersCountUrl: string;
   private readonly updateMemberActiveStatusUrl: string;
@@ -41,6 +46,10 @@ export class ApiService {
 
   constructor(private http: HttpClient) {
     this.rootOrigin = 'http://localhost:8080';
+    this.ordersUrl = this.rootOrigin + '/orders';
+    this.createOrderUrl = this.rootOrigin + '/orders/create';
+    this.updateOrderUrl = this.rootOrigin + '/orders/updateOrder';
+    this.deleteOrderUrl = this.rootOrigin + '/orders/deleteOrder/';
     this.membersUrl = this.rootOrigin + '/members';
     this.memberUrl =  this.rootOrigin + '/members/';
     this.uploadUrl = this.rootOrigin + '/upload/';
@@ -173,5 +182,21 @@ export class ApiService {
   public deletePdfFileByMemberIdAndFileName(memberId: number, fileName: string): Observable<ApiResponse> {
     const url = this.deletePdfFileByMemberIdAndFileNameUrl + memberId + '/' + fileName + '/' + 'delete';
     return this.http.delete<ApiResponse>(url);
+  }
+
+  public findAllOrders(): Observable<Orders[]> {
+    return this.http.get<Orders[]>(this.ordersUrl);
+  }
+
+  public saveNewOrder(newGame: Orders): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(this.createOrderUrl, newGame);
+  }
+
+  public updateOrder(newGame: Orders): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this.updateOrderUrl, newGame);
+  }
+
+  public deleteOrderById(gameId: number): Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>(this.deleteOrderUrl + gameId);
   }
 }

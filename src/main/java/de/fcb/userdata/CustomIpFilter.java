@@ -3,6 +3,8 @@ package de.fcb.userdata;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.web.util.matcher.IpAddressMatcher;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @SuppressWarnings("MissingJavadoc")
 @Component
 public class CustomIpFilter implements Filter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomIpFilter.class);
+
     private final MyIpService myIpService;
 
     public CustomIpFilter(final MyIpService myIpService) {
@@ -27,6 +31,7 @@ public class CustomIpFilter implements Filter {
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         final String currentIp = getClientIp(httpRequest);
+        LOGGER.info(currentIp);
         final List<String> allowedIps = this.myIpService.getAllowedIps();
         final boolean allowed = allowedIps.stream().anyMatch(ip -> new IpAddressMatcher(ip).matches(currentIp));
 

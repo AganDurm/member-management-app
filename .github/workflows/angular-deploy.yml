@@ -24,7 +24,7 @@ jobs:
           npm run build -- --configuration=production --base-href="https://durmex.de/"
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.0
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           token: ${{ secrets.MY_PAT }}
           branch: prod

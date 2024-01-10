@@ -26,6 +26,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
+          token: ${{ secrets.MY_PAT }}
           branch: prod
           folder: frontend-app/dist

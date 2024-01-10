@@ -27,5 +27,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
           token: ${{ secrets.MY_PAT }}
-          branch: develop
+          branch: prod
           folder: frontend-app/dist

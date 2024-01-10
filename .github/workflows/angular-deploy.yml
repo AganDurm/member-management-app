@@ -21,7 +21,7 @@ jobs:
         run: |
           cd frontend-app
           npm install
-          npm run build -- --configuration=production
+          npm run build -- --configuration=production --output-path docs
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3

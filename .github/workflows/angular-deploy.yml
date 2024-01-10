@@ -3,7 +3,7 @@ name: Deploy Angular App to GitHub Pages
 on:
   push:
     branches:
-      - prod
+      - develop
 
 jobs:
   build-and-deploy:
@@ -27,5 +27,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
           token: ${{ secrets.MY_PAT }}
-          branch: prod
+          branch: develop
           folder: frontend-app/dist

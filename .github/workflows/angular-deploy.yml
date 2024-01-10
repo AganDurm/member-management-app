@@ -28,4 +28,4 @@ jobs:
         with:
           token: ${{ secrets.MY_PAT }}
           branch: prod
-          folder: dist/frontend-app
+          folder: frontend-app/dist/frontend-app

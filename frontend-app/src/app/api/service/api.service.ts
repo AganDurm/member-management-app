@@ -88,7 +88,15 @@ export class ApiService {
   }
 
   public findAllPdfFilesByMemberId(memberId: number | null): Observable<File[]> {
-    return this.http.get<File[]>(this.findAllFilesByMemeberIdUrl + memberId + '/files');
+    return this.http.get<File[]>(this.findAllFilesByMemeberIdUrl + memberId + '/userFiles');
+  }
+
+  public findAllPdfFilesByGameName(gameName: string): Observable<File[]> {
+    return this.http.get<File[]>(this.findAllFilesByMemeberIdUrl + gameName + '/gameFiles');
+  }
+
+  public findAllPdfFiles(): Observable<File[]> {
+    return this.http.get<File[]>(this.findAllFilesByMemeberIdUrl + 'gameFiles');
   }
 
   public findAllFilesByMemeberIdAndGame(memberId: number, game: string): Observable<File[]> {
@@ -175,12 +183,16 @@ export class ApiService {
     return this.http.delete<ApiResponse>(this.deleteAllMembersUrl);
   }
 
-  public downloadFileByUserId(memberId: number, fileName: string): Observable<Blob> {
-    return this.http.get<Blob>(this.downloadFileByUserIdUrl + memberId + "/" + fileName + "/download", { responseType: 'blob' as 'json' });
+  public downloadFileByUserId(memberId: number, fileName: string, game: string): Observable<Blob> {
+    return this.http.get<Blob>(this.downloadFileByUserIdUrl + memberId + "/" + fileName + "/" + game + "/download", { responseType: 'blob' as 'json' });
   }
 
-  public deletePdfFileByMemberIdAndFileName(memberId: number, fileName: string): Observable<ApiResponse> {
-    const url = this.deletePdfFileByMemberIdAndFileNameUrl + memberId + '/' + fileName + '/' + 'delete';
+  public downloadAllFilesByGameName(game: string): Observable<Blob> {
+    return this.http.get<Blob>(this.downloadFileByUserIdUrl + game + "/download", { responseType: 'blob' as 'json' });
+  }
+
+  public deletePdfFileByMemberIdAndFileName(memberId: number, fileName: string, game: string): Observable<ApiResponse> {
+    const url = this.deletePdfFileByMemberIdAndFileNameUrl + memberId + '/' + fileName + '/' + game + '/' + 'delete';
     return this.http.delete<ApiResponse>(url);
   }
 

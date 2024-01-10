@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,8 +47,8 @@ public class DeleteUserDataRestController {
     @DeleteMapping(DELETE_ALL)
     public ResponseEntity<ApiResponse> deleteAllUserData() {
         try {
-            this.userDataService.deleteAllEntries();
             this.userFileService.deleteAllFiles();
+            this.userDataService.deleteAllEntries();
 
             final Path directory = Paths.get(CLASSPATH_RESOURCES_USER_FILES);
 
@@ -73,6 +74,7 @@ public class DeleteUserDataRestController {
      */
     @SuppressWarnings("FeatureEnvy")
     @DeleteMapping(DELETE_USER_BY_ID)
+    @Transactional
     public ResponseEntity<ApiResponse> deleteMamberById(@PathVariable final Long memberId) {
         final Optional<UserData> userDataOptional = this.userDataService.findById(memberId);
 
@@ -81,7 +83,7 @@ public class DeleteUserDataRestController {
 
             if (userDataOptional.isPresent()) {
                 final UserData userData = userDataOptional.get();
-                LOGGER.info("Member with E-Mail: {} deleted.", memberId);
+                LOGGER.info("Member with E-Mail: {} deleted.", userData.getEmail());
                 return ResponseEntity.ok().body(new ApiResponse("Mitglied mit der E-Mail: " + userData.getEmail() + " gelöscht."));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Mitglied nicht gefunden und nicht gelöscht."));

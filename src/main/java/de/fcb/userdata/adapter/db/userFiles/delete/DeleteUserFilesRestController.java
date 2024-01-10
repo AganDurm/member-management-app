@@ -26,14 +26,15 @@ import lombok.RequiredArgsConstructor;
 public class DeleteUserFilesRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserFilesRestController.class);
 
-    private static final String USER_DELETE_FILE_BY_USER_ID_RESOURCE_URL = "/members/{memberId}/{fileName}/delete";
+    private static final String USER_DELETE_FILE_BY_USER_ID_RESOURCE_URL = "/members/{memberId}/{fileName}/{game}/delete";
 
     private final UserFileService userFileService;
 
     @DeleteMapping(USER_DELETE_FILE_BY_USER_ID_RESOURCE_URL)
-    public ResponseEntity<ApiResponse> deleteFile(@PathVariable final Long memberId, @PathVariable final String fileName) {
+    public ResponseEntity<ApiResponse> deleteFile(@PathVariable final Long memberId, @PathVariable final String fileName,
+                                                  @PathVariable final String game) {
         try {
-            final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + memberId;
+            final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + game;
             final Path directory = Paths.get(uploadDirectory);
             final Path fileToDelete = directory.resolve(fileName);
 

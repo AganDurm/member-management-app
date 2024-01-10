@@ -13,93 +13,163 @@
         </div>
     </div>
     <div class="container pt-4 pb-4 d-flex justify-content-center align-items-center">
-        <h5 class="col" *ngIf="games.length == 0">Es liegen keine Bestellungen vor.</h5>
+        <h5 class="col" *ngIf="orders.length == 0">Es liegen keine Bestellungen vor.</h5>
     </div>
     <div class="container pt-4 pb-4">
-        <div class="row" *ngIf="games.length > 0">
+        <div class="row" *ngIf="orders.length > 0">
             <div class="col-12 col-md-3">
                 <div class="list-group" id="list-tab" role="tablist">
-                    <a *ngFor="let game of games; let i = index"
+                    <a *ngFor="let order of orders; let i = index"
                        [ngClass]="i == 0 ? 'active' : ''"
                        class="list-group-item list-group-item-action"
-                       [id]="game.name+'-details'"
+                       [id]="order.name+'-details'"
                        data-bs-toggle="list"
-                       href="#{{game.name}}" role="tab" [attr.aria-controls]="game.name + '-details'">{{game.name}}
+                       href="#{{order.name}}" role="tab" [attr.aria-controls]="order.name + '-details'">{{order.name}}
                     </a>
                 </div>
             </div>
             <div class="col-12 col-md-9">
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show" role="tabpanel"
-                         *ngFor="let game of games; let i = index"
-                         [id]="game.name"
+                         *ngFor="let order of orders; let i = index"
+                         [id]="order.name"
                          [ngClass]="i == 0 ? 'active' : ''"
-                         [attr.aria-labelledby]="game.name+'-details'">
+                         [attr.aria-labelledby]="order.name+'-details'">
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h5 class="card-title fw-bold">{{game.name}}</h5>
+                                <h5 class="card-title fw-bold">{{order.name}}</h5>
                                 <hr class="bg-light border-2 border-top border-danger">
                                 <form>
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
                                         <label class="form-label m-0">Kat. 1:</label>
                                         <div>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat1(game)">-</button>
-                                            <span class="mx-2">{{game.kat1}}</span>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat1(game)">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="decrementKat1(order)">-</button>
+                                            <span class="mx-2">{{order.kat1}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat1(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
                                         <label class="form-label  m-0">Kat. 1 (Block 1XX):</label>
                                         <div>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat4hunderts(game)">-</button>
-                                            <span class="mx-2">{{game.kat4hunderts}}</span>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat4hunderts(game)">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="decrementKat4hunderts(order)">-</button>
+                                            <span class="mx-2">{{order.kat4hunderts}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat4hunderts(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
-                                        <label class="form-label  m-0">Kat. 1 (Blöcke)<button class="btn btn-sm btn-default" data-bs-toggle="tooltip" data-bs-placement="top" title=" 101-106 &#10; 119-124 &#10; 228-233 "><i class="fas fa-info-circle"></i></button>:
+                                        <label class="form-label  m-0">Kat. 1 (Blöcke)
+                                            <button class="btn btn-sm btn-default"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title=" 101-106 &#10; 119-124 &#10; 228-233 ">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>:
                                         </label>
                                         <div>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat4platinum(game)">-</button>
-                                            <span class="mx-2">{{game.kat4platinum}}</span>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat4platinum(game)">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="decrementKat4platinum(order)">-</button>
+                                            <span class="mx-2">{{order.kat4platinum}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat4platinum(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
                                         <label class="form-label  m-0">Kat. 2:</label>
                                         <div>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat2(game)">-</button>
-                                            <span class="mx-2">{{game.kat2}}</span>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat2(game)">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat2(order)">-</button>
+                                            <span class="mx-2">{{order.kat2}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat2(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
                                         <label class="form-label  m-0">Kat. 3:</label>
                                         <div>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat3(game)">-</button>
-                                            <span class="mx-2">{{game.kat3}}</span>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat3(game)">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat3(order)">-</button>
+                                            <span class="mx-2">{{order.kat3}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat3(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
                                         <label class="form-label  m-0">Kat. 4:</label>
                                         <div>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat4(game)">-</button>
-                                            <span class="mx-2">{{game.kat4}}</span>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat4(game)">+</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat4(order)">-</button>
+                                            <span class="mx-2">{{order.kat4}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat4(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="d-flex justify-content-end">
-                                        <button type="button" class="btn btn-outline-danger mx-4" (click)="deleteById(game.id!)">Spiel Löschen</button>
-                                        <button type="button" class="btn btn-success" (click)="saveChanges(game)">Änderungen Speichern</button>
+                                        <button type="button" class="btn btn-outline-danger mx-4"
+                                                (click)="deleteById(order.id!)">Spiel Löschen</button>
+                                        <button type="button" class="btn btn-success"
+                                                (click)="saveChanges(order)">Änderungen Speichern</button>
                                     </div>
                                 </form>
+                                <hr class="bg-danger border-1 border-top border-dark">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row pt-2 pb-2">
+                                            <h5 class="card-title col-8 m-0 d-flex align-items-center">
+                                                {{ getFilesByName(order.name).length > 0 ? 'Tickets' : 'Keine Tickets vorhanden' }}
+                                            </h5>
+                                            <div class="text-end col-4">
+                                                <button class="btn btn-success position-relative"
+                                                        (click)="downloadFilesByGame(order.name)"
+                                                        *ngIf="getFilesByName(order.name).length > 0">
+                                                    <i class="fa fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive" *ngIf="getFilesByName(order.name).length > 0">
+                                            <hr class="bg-danger border-2 border-top border-info">
+                                            <table class="table table-sm table-hover caption-top">
+                                                <thead class="table-light fs-6">
+                                                <tr>
+                                                    <th scope="col" class="align-middle col-8">Name</th>
+                                                    <th scope="col" class="align-middle">Spiel</th>
+                                                    <th scope="col" class="align-middle text-center">Download</th>
+                                                    <th scope="col" class="align-middle text-center">Ansehen</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="fs-6">
+                                                <tr *ngFor="let file of getFilesByName(order.name)">
+                                                    <td class="align-middle text-truncate" style="max-width: 500px;">
+                                                        {{ file?.fileName }}
+                                                    </td>
+                                                    <td class="align-middle">{{ file?.game }}</td>
+                                                    <td class="align-middle text-center">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <button class="btn btn-outline-success" (click)="downloadFile(file.fileName, file.game)">
+                                                                <i class="fa fa-download"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <button class="btn btn-outline-info"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#pdfPreviewModal"
+                                                                    (click)="loadPdf(file.fileName, file.game)">
+                                                                <i class="fa fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -112,7 +182,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="pdfPreviewModalLabel">Spiel anlegen</h5>
+                <h5 class="modal-title" id="createGameModalLabel">Spiel anlegen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -127,6 +197,22 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addNewGame()">Erstellen</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfPreviewModalLabel">PDF Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe [src]="pdfUrl" width="100%" height="500px" title="PDF View"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
             </div>
         </div>
     </div>

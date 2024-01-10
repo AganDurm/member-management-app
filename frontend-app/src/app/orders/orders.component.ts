@@ -5,6 +5,9 @@ import {LoadingService} from '../loading.service';
 import {Subscription} from 'rxjs';
 import {Orders} from '../model/orders';
 import {ApiResponse} from '../api/models/api-response';
+import {File} from '../model/file';
+import {saveAs} from 'file-saver';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-orders',
@@ -12,10 +15,13 @@ import {ApiResponse} from '../api/models/api-response';
   styleUrl: './orders.component.less'
 })
 export class OrdersComponent implements OnInit, OnDestroy {
+  pdfUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl("");
   game: string = '';
   isLoading: boolean = false;
   messages: string[] = [];
-  games: Orders[] = [];
+  orders: Orders[] = [];
+
+  files: File[] = [];
 
   private ordersSubscription: Subscription = new Subscription();
   private messageSubscription: Subscription = new Subscription();
@@ -23,7 +29,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService,
               private loadingService: LoadingService,
-              private messageService: ResponseMessageService) {}
+              private messageService: ResponseMessageService,
+              private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     this.loadingService.show();
@@ -31,8 +38,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.messageService.getMessages().subscribe(messages => this.messages = messages);
     this.loadingSubscription = this.loadingService.loading$.subscribe(isLoading => this.isLoading = isLoading);
     this.fetchOrders();
-
-    this.loadingService.hide();
+    this.apiService.findAllPdfFiles().subscribe({
+      next: (files: File[]) => {
+        this.loadingService.hide();
+        this.files = files;
+      },
+      error: () => {
+        this.loadingService.hide();
+        this.messageService.displayMessage('Dateien konnten nicht geladen werden.');
+      }
+    });
   }
 
   addNewGame(): void {
@@ -51,7 +66,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   fetchOrders(): void {
     this.ordersSubscription = this.apiService.findAllOrders().subscribe((data: Orders[]) => {
-      this.games = data;
+      this.orders = data.reverse();
     });
   }
 
@@ -79,6 +94,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     if (game.kat4 > 0) {
       game.kat4--;
     }
+  }
+
+  getFilesByName(game: string): File[] {
+    return this.files.filter(file => file.game.toLowerCase() === game.toLowerCase());
   }
 
   incrementKat4(game: Orders): void {
@@ -129,6 +148,43 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.fetchOrders();
       },
       error: (error) => this.messageService.displayMessage(error.message)
+    });
+  }
+
+  downloadFile(fileName: string, game: string): void {
+    this.loadingService.show();
+
+    this.apiService.downloadFileByUserId(0, fileName, game).subscribe({
+      next:(blob) => {
+        this.loadingService.hide();
+        saveAs(blob, fileName);
+        this.messageService.displayMessage("Datei " + fileName + " für das Spiel " + game + " erfolgereich heruntergeladen.");
+      },
+      error: () => {
+        this.loadingService.hide();
+        this.messageService.displayMessage('Download Fehler!');
+      }
+    });
+  }
+
+  loadPdf(fileName: string, game: string): void {
+    const unsafeUrl = "http://localhost:8080/members/" + 0 + "/" + fileName + "/" + game + "/preview";
+    this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
+  }
+
+  downloadFilesByGame(game: string): void {
+    this.loadingService.show();
+
+    this.apiService.downloadAllFilesByGameName(game).subscribe({
+      next:(blob) => {
+        this.loadingService.hide();
+        saveAs(blob, `${game}.zip`);
+        this.messageService.displayMessage("Tickets für das Spiel " + game + " erfolgereich heruntergeladen.");
+      },
+      error: () => {
+        this.loadingService.hide();
+        this.messageService.displayMessage('Download Fehler!');
+      }
     });
   }
 

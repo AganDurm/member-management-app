@@ -49,8 +49,9 @@ public class CreateUserFilesRestController {
 
     @SuppressWarnings("FeatureEnvy")
     @PostMapping(UPLOAD_USER_FILE_FOR_USER_RESOURCE_URL)
-    public ResponseEntity<List<UserFile>> uploadFile(@PathVariable("memberId") final Long memberId, @RequestParam("files") final MultipartFile[] files,
-                                                @RequestParam("game") final String game) {
+    public ResponseEntity<List<UserFile>> uploadFile(@PathVariable("memberId") final Long memberId,
+                                                     @RequestParam("files") final MultipartFile[] files,
+                                                     @RequestParam("game") final String game) {
         try {
             final List<UserFile> userFiles = new ArrayList<>();
             final Optional<UserData> user = this.userDataService.findById(memberId);
@@ -62,7 +63,7 @@ public class CreateUserFilesRestController {
                     final String regex = "[A-Z]{3}-[A-Z]{3}_\\d+_\\d+_\\d+";
                     final Pattern pattern = Pattern.compile(regex);
                     final Matcher matcher = pattern.matcher(Objects.requireNonNull(file.getOriginalFilename()));
-                    final File directory = createDirectoryForUserByUserId(memberId);
+                    final File directory = createDirectoryForUserByGame(game);
                     final String fileName = extractName(file, matcher, memberById);
                     final File destinationFile = new File(directory, Objects.requireNonNull(fileName));
 
@@ -92,14 +93,14 @@ public class CreateUserFilesRestController {
 
     private String extractName(final MultipartFile file, final Matcher matcher, final Optional<UserData> memberById) {
         if (memberById.isPresent() && matcher.find()) {
-            return memberById.get().getUsername().replace(" ", "_") + "_" + matcher.group();
+            return memberById.get().getUsername().replace(" ", "_") + "_" + matcher.group() + ".pdf";
         } else {
             return file.getOriginalFilename();
         }
     }
 
-    private File createDirectoryForUserByUserId(final Long userId) {
-        final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + userId;
+    private File createDirectoryForUserByGame(final String game) {
+        final String uploadDirectory = CLASSPATH_RESOURCES_USER_FILES + game;
         final File directory = new File(uploadDirectory);
         if (!directory.exists()) {
             final boolean directoryCreated = directory.mkdirs();

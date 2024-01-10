@@ -38,6 +38,14 @@ public class UserFileService {
         return this.userFileRepository.findByUserDataIdAndGame(memberId, game);
     }
 
+    public List<UserFile> getUserFilesByGame(final String game) {
+        return this.userFileRepository.findAllByGame(game);
+    }
+
+    public List<UserFile> getAllFiles() {
+        return this.userFileRepository.findAll();
+    }
+
     public UserFile findFirstByUserDataIdAndFileName(final Long userId, final String fileName) {
         return this.userFileRepository.findFirstByUserDataIdAndFileName(userId, fileName);
     }

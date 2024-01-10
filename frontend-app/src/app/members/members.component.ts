@@ -45,9 +45,8 @@ export class MembersComponent implements OnInit, OnDestroy {
       if (this.members.length === 0) {
         this.router.navigate(['/upload']).then(() => {});
       }
+      this.loadingService.hide();
     });
-
-    this.loadingService.hide();
   }
 
   toggleActiveFilter(): void {
@@ -94,14 +93,16 @@ export class MembersComponent implements OnInit, OnDestroy {
 
     this.apiService.deleteMemberById(memberId).subscribe({
       next: (response) => {
+        this.loadingService.hide();
         this.members = this.members.filter((member: Member) => member.id !== memberId);
         this.filteredMembers = this.members;
         this.messageService.displayMessage(response.message);
       },
-      error: (error) => this.messageService.displayMessage(error.message)
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   get memberToDelete(): Member | undefined {
@@ -113,14 +114,16 @@ export class MembersComponent implements OnInit, OnDestroy {
 
     this.apiService.deleteAllMembers().subscribe({
       next: (data: ApiResponse) => {
+        this.loadingService.hide();
         this.filteredMembers = [];
         this.messageService.displayMessage(data.message);
         this.router.navigate(['/upload']).then(() => {});
       },
-      error: (error) => this.messageService.displayMessage(error.message)
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   ngOnDestroy() {

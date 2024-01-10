@@ -23,6 +23,8 @@ public interface UserFileRepository extends JpaRepository<UserFile, Long> {
 
     UserFile findFirstByUserDataIdAndFileName(final Long userId, final String fileName);
 
+    List<UserFile> findAllByGame(final String game);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM UserFile uf WHERE uf.userData.id = :userId AND uf.fileName = :fileName")

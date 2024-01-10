@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Member} from '../model/member';
 import {File} from '../model/file';
-import {catchError, forkJoin, map, Observable, of, Subscription} from 'rxjs';
+import {catchError, EMPTY, finalize, forkJoin, map, Observable, of, Subscription, switchMap} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../api/service/api.service';
 import {LoadingService} from '../loading.service';
@@ -12,6 +12,7 @@ import {ApiResponse} from '../api/models/api-response';
 import {EditStates} from './models/editStates';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {GameFiles} from './models/gameFiles';
+import {Orders} from '../model/orders';
 
 
 @Component({
@@ -23,6 +24,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   pdfUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl("");
   selectedFiles: any[] = [];
+  orders: Orders[] = [];
+  selectedGame: string = '';
   messages: string[] = [];
   memberId: number | null = 0;
   uniqueGameNames: string[] = [];
@@ -78,26 +81,42 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
     this.messageService.getMessages().subscribe(messages => this.messages = messages);
 
-    this.memberId = parseFloat(this.route.snapshot.paramMap.get('id') as string);
-    if (this.memberId) {
-      this.memberSubscription = this.apiService.findById(this.memberId).subscribe({
-        next: (data: Member) => {
-          this.member = data;
-          this.apiService.findAllPdfFilesByMemberId(this.memberId).subscribe({
-            next: (files: File[]) => {
-              this.files = files;
-              this.uniqueGameNames = this.resolveUniqueGames(this.files);
-              this.loadAllGamesFiles(this.uniqueGameNames, this.member.id);
-            },
-            error: () => this.messageService.displayMessage('Dateien konnten nicht geladen werden.')
-          });
-        },
-        error: () => this.messageService.displayMessage('Mitglied konnten nicht geladen werden.')
-      });
-    }
+    this.apiService.findAllOrders().subscribe({
+      next: (data: Orders[]) => {
+        this.orders = data;
+      },
+      error: () => this.messageService.displayMessage('Bestellungen konnten nicht geladen werden.')
+    });
 
-    this.loadingService.hide();
+    this.memberId = parseFloat(this.route.snapshot.paramMap.get('id') as string);
+
+    if (this.memberId) {
+      this.apiService.findById(this.memberId).pipe(
+          switchMap((member: Member) => {
+            this.member = member;
+            return this.apiService.findAllPdfFilesByMemberId(this.memberId);
+          }),
+          catchError(() => {
+            this.messageService.displayMessage('Mitglied konnten nicht geladen werden.');
+            return EMPTY;
+          })
+      ).subscribe({
+        next: (files: File[]) => {
+          this.files = files;
+          this.uniqueGameNames = this.resolveUniqueGames(this.files);
+          this.loadAllGamesFiles(this.uniqueGameNames, this.member.id);
+          this.loadingService.hide();
+        },
+        error: () => {
+          this.messageService.displayMessage('Dateien konnten nicht geladen werden.');
+          this.loadingService.hide();
+        }
+      });
+    } else {
+      this.loadingService.hide();
+    }
   }
+
 
   toggleEdit(field: keyof EditStates, newValue: string, userId: number): void {
     this.editStates[field] = !this.editStates[field];
@@ -158,184 +177,246 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.show();
 
     this.apiService.updateMemberUsername(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   savePassword(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberPassword(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveKundennummer(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberKundennummer(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveMitgliedsnummer(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberMitgliedsnummer(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveCardNumber(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberCardNumber(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveVisaOrMc(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberVisaOrMc(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveMonth(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberMonth(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveYear(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberYear(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveCvc(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberCvc(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveNameOnCard(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberNameOnCard(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveGeb(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberGeb(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   savePLZ(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberPLZ(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveStreet(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberStreet(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
-
-    this.loadingService.hide();
   }
 
   saveCity(changedMembersData: ChangedMembersData): void {
     this.loadingService.show();
 
     this.apiService.updateMemberCity(changedMembersData).subscribe({
-      next: (response: ApiResponse) => this.messageService.displayMessage(response.message),
-      error: (error) => this.messageService.displayMessage(error.message)
+      next: (response: ApiResponse) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(response.message);
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
 
     this.loadingService.hide();
   }
 
-  loadPdf(memberId: number, fileName: string): void {
-    const unsafeUrl = "http://localhost:8080/members/" + memberId + "/" + fileName + "/preview";
+  loadPdf(memberId: number, fileName: string, game: string): void {
+    const unsafeUrl = "http://localhost:8080/members/" + memberId + "/" + fileName + "/" + game + "/preview";
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
   }
 
-  downloadFile(userId: number, fileName: string): void {
+  downloadFile(userId: number, fileName: string, game: string): void {
     this.loadingService.show();
 
-    this.apiService.downloadFileByUserId(userId, fileName).subscribe({
+    this.apiService.downloadFileByUserId(userId, fileName, game).subscribe({
       next:(blob) => {
         saveAs(blob, fileName);
         this.messageService.displayMessage("Datei " + fileName + " für " + userId + " erfolgereich heruntergeladen.");
         },
       error: () => this.messageService.displayMessage('Download Fehler!')
     });
-
-    this.loadingService.hide();
   }
 
-  deleteFile(userId: number, fileName: string): void {
-    this.apiService.deletePdfFileByMemberIdAndFileName(userId, fileName).subscribe({
+  deleteFile(userId: number, fileName: string, game: string): void {
+    this.loadingService.show();
+
+    this.apiService.deletePdfFileByMemberIdAndFileName(userId, fileName, game).subscribe({
       next: (respones) => {
+        this.loadingService.hide();
         this.files = this.files.filter(item => item.fileName !== fileName);
         this.uniqueGameNames = this.resolveUniqueGames(this.files);
         this.messageService.displayMessage(respones.message);
         this.loadAllGamesFiles(this.uniqueGameNames, this.member.id);
       },
-      error: (error) => this.messageService.displayMessage(error.message)
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
   }
 
@@ -343,8 +424,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.loadingService.show();
     let formData: any = new FormData();
 
-    if(this.game !== '' && this.selectedFiles.length > 0) {
-      formData.append('game', this.game);
+    if(this.selectedGame !== '' && this.selectedFiles.length > 0) {
+      formData.append('game', this.selectedGame);
 
       for (const file of this.selectedFiles) {
         formData.append('files', file);
@@ -352,22 +433,26 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
       this.apiService.uploadPdfFiles(formData, this.memberId).subscribe({
         next: (files) => {
+          this.loadingService.hide();
           this.files = files;
           this.uniqueGameNames = this.resolveUniqueGames(this.files);
           this.loadAllGamesFiles(this.uniqueGameNames, this.member.id);
         },
-        error: () => this.messageService.displayMessage('Error!')
+        error: () => {
+          this.loadingService.hide();
+          this.messageService.displayMessage('Error!');
+        }
       });
-    } else if(this.game === '') {
+    } else if(this.selectedGame === '') {
+      this.loadingService.hide();
       this.messageService.displayMessage('Fehler! Bitte das Spiel auswählen!');
     } else {
+      this.loadingService.hide();
       this.messageService.displayMessage('Fehler! Bitte mindestens eine Datei auswählen!');
     }
-    this.game = '';
+    this.selectedGame = '';
     this.selectedFiles = [];
     (document.getElementById('fileInput') as HTMLInputElement).value = '';
-
-    this.loadingService.hide();
   }
 
   loadAllGamesFiles(games: string[], memberId: number): void {
@@ -383,9 +468,9 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         )
     );
 
-    this.games$ = forkJoin(gameFilesObservables);
-
-    this.loadingService.hide();
+    this.games$ = forkJoin(gameFilesObservables).pipe(
+        finalize(() => this.loadingService.hide())
+    );
   }
 
   public onFilesSelected(event: any): void {

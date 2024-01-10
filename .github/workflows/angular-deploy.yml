@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - develop
+      - frontend
 
 jobs:
   build-and-deploy:
@@ -31,4 +31,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.MY_PAT }}
           branch: gh-pages
-          folder: frontend-app/dist/frontend-app
+          folder: dist/frontend-app

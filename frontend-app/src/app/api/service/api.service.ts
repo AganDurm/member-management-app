@@ -45,7 +45,7 @@ export class ApiService {
   private readonly deletePdfFileByMemberIdAndFileNameUrl: string;
 
   constructor(private http: HttpClient) {
-    this.rootOrigin = 'http://localhost:8080';
+    this.rootOrigin = 'https://durmex-app.onrender.com';
     this.ordersUrl = this.rootOrigin + '/orders';
     this.createOrderUrl = this.rootOrigin + '/orders/create';
     this.updateOrderUrl = this.rootOrigin + '/orders/updateOrder';

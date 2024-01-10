@@ -168,7 +168,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   loadPdf(fileName: string, game: string): void {
-    const unsafeUrl = "http://localhost:8080/members/" + 0 + "/" + fileName + "/" + game + "/preview";
+    const unsafeUrl = "https://durmex-app.onrender.com/members/" + 0 + "/" + fileName + "/" + game + "/preview";
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
   }
 

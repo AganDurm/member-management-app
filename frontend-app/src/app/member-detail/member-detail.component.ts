@@ -386,7 +386,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   loadPdf(memberId: number, fileName: string, game: string): void {
-    const unsafeUrl = "http://localhost:8080/members/" + memberId + "/" + fileName + "/" + game + "/preview";
+    const unsafeUrl = "https://durmex-app.onrender.com/members/" + memberId + "/" + fileName + "/" + game + "/preview";
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unsafeUrl);
   }
 

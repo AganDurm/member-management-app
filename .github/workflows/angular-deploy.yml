@@ -24,7 +24,7 @@ jobs:
         run: |
           cd frontend-app
           npm install
-          ng deploy
+          ng build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3

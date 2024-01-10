@@ -24,7 +24,7 @@ jobs:
         run: |
           cd frontend-app
           npm install
-          ng deploy --base-href=https://durmex.de
+          ng deploy
 
       - name: Deploy App
         uses: JamesIves/github-pages-deploy-action@releases/v3

@@ -24,8 +24,7 @@ jobs:
         run: |
           cd frontend-app
           npm install
-          ng add angular-cli-ghpages --skip-confirmation
-          ng deploy
+          ng deploy --base-href=https://durmex.de
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3

@@ -23,11 +23,11 @@ jobs:
       - name: Install dependencies and build
         run: |
           cd frontend-app
+          pwd
           npm install
           npm run build
 
       - name: Deploy App
-        run: ls
         uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
         with:
           github_access_token: ${{ secrets.MY_PAT }}

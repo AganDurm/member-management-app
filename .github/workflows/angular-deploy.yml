@@ -23,13 +23,13 @@ jobs:
       - name: Install dependencies and build
         run: |
           cd frontend-app
-          npm install
+          npm ci
           npm run build
 
       - name: Deploy App
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          github_token: ${{ secrets.MY_PAT }}
-          base_branch: develop
-          branch: gh-pages
-          folder: frontend-app/dist
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
+          BASE_BRANCH: develop
+          BRANCH: gh-pages
+          FOLDER: frontend-app/dist/frontend-app

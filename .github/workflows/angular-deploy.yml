@@ -29,6 +29,8 @@ jobs:
       - name: Deploy to GitHub Pages
         run: |
           cd frontend-app
+          git config user.name "AganDurm"
+          git config user.email "durmisevicagan@outlook.de"
           npx angular-cli-ghpages --dir=dist/browser --no-silent
           ls dist
           ls dist/*

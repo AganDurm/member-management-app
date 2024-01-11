@@ -23,16 +23,12 @@ jobs:
       - name: Install dependencies and build
         run: |
           cd frontend-app
-          pwd
           npm install
           npm run build
 
       - name: Deploy to GitHub Pages
         run: |
-          ls
-          pwd
           cd frontend-app
           npx angular-cli-ghpages --dir=dist
-          ls -al
         env:
           GH_TOKEN: ${{ secrets.MY_PAT }}

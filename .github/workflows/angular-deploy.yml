@@ -29,7 +29,7 @@ jobs:
       - name: Deploy to GitHub Pages
         run: |
           cd frontend-app
-          npx angular-cli-ghpages --dir=dist/browser
+          npx angular-cli-ghpages --dir=dist/browser --no-silent
           ls dist
           ls dist/*
         env:

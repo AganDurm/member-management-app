@@ -22,7 +22,6 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-          cd frontend-app
           npm install
           npm run build
 
@@ -31,7 +30,7 @@ jobs:
         with:
           github_access_token: ${{ secrets.MY_PAT }}
           build_configuration: staging
-          base_href: /member-management-app/
+          base_href: ./
           deploy_branch: gh-pages
           angular_dist_build_folder: frontend-app/dist
 

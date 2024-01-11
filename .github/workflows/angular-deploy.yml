@@ -29,6 +29,6 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          npx angular-cli-ghpages --dir=dist/frontend-app
+          npx angular-cli-ghpages --dir=frontend-app/dist/frontend-app
         env:
           GH_TOKEN: ${{ secrets.MY_PAT }}

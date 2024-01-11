@@ -17,8 +17,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "baseHref": "/member-management-app/",
-            "outputPath": "dist/frontend-app",
+            "baseHref": "/",
+            "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [

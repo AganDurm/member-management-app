@@ -32,7 +32,7 @@ jobs:
           ls
           pwd
           cd frontend-app
-          npx angular-cli-ghpages --dir=frontend-app/dist
+          npx angular-cli-ghpages --dir=dist
           ls -al
         env:
           GH_TOKEN: ${{ secrets.MY_PAT }}

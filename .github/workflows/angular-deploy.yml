@@ -30,5 +30,6 @@ jobs:
         run: |
           cd frontend-app
           npx angular-cli-ghpages --dir=dist
+          ls dist
         env:
           GH_TOKEN: ${{ secrets.MY_PAT }}

@@ -23,6 +23,7 @@ jobs:
       - name: Install dependencies and build
         run: |
           cd frontend-app
+          ls
           npm install
           npm run build
 
@@ -33,7 +34,7 @@ jobs:
           build_configuration: staging
           base_href: ./
           deploy_branch: gh-pages
-          angular_dist_build_folder: frontend-app/dist
+          angular_dist_build_folder: frontend-app/dist/frontend-app
 
 permissions:
   contents: write

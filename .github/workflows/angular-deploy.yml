@@ -27,9 +27,13 @@ jobs:
           npm run build
 
       - name: Deploy App
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
         with:
-          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
-          BASE_BRANCH: develop
-          BRANCH: gh-pages
-          FOLDER: frontend-app/dist
+          github_access_token: ${{ secrets.MY_PAT }}
+          build_configuration: staging
+          base_href: /member-management-app/
+          deploy_branch: gh-pages
+          angular_dist_build_folder: frontend-app/dist
+
+permissions:
+  contents: write

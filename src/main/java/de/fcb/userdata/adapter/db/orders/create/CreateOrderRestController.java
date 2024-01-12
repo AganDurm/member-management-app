@@ -43,6 +43,10 @@ public class CreateOrderRestController {
                     .kat4(order.getKat4())
                     .kat4hunderts(order.getKat4hunderts())
                     .kat4platinum(order.getKat4platinum())
+                    .kat1single(order.getKat1single())
+                    .kat2single(order.getKat2single())
+                    .kat3single(order.getKat3single())
+                    .kat4single(order.getKat4single())
                     .build();
             this.ordersService.saveAll(List.of(orders));
             return ResponseEntity.ok(new ApiResponse("Bestellung erstellt."));

@@ -38,5 +38,9 @@ public class Orders {
     private int kat4;
     private int kat4platinum;
     private int kat4hunderts;
+    private int kat1single;
+    private int kat2single;
+    private int kat3single;
+    private int kat4single;
 }
 

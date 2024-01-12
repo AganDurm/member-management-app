@@ -22,13 +22,11 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-          cd frontend-app
           npm install
           npm run build
 
       - name: Deploy to GitHub Pages
         run: |
-          cd frontend-app
           git config user.name "AganDurm"
           git config user.email "durmisevicagan@outlook.de"
           npx angular-cli-ghpages --dir=dist/browser --no-silent

@@ -30,7 +30,5 @@ jobs:
           git config user.name "AganDurm"
           git config user.email "durmisevicagan@outlook.de"
           npx angular-cli-ghpages --dir=dist/browser --no-silent
-          ls dist
-          ls dist/*
         env:
           GH_TOKEN: ${{ secrets.MY_PAT }}

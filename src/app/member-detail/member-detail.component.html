@@ -1,0 +1,381 @@
+<div class="container">
+    <div class="container pt-4 pb-4">
+        <div class="row pt-2 pb-2">
+            <div class="col-md-12 col-12 d-flex align-items-center">
+                <a [routerLink]="['/members']"><i class="fa fa-arrow-left"></i></a>
+                <h3 class="mb-0 mx-3">Mitgliedsverwaltung</h3>
+            </div>
+        </div>
+    </div>
+    <div class="container pt-4 pb-4">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ member.username }}</h5>
+                        <p class="card-text"><small class="text-muted">{{ member.email }}</small></p>
+                    </div>
+                </div>
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-info-details" data-bs-toggle="list"
+                       href="#list-info" role="tab" aria-controls="info-details">Persönliche Daten</a>
+                    <a class="list-group-item list-group-item-action" id="list-mitgliedschaften-list" data-bs-toggle="list"
+                       href="#list-mitgliedschaften" role="tab" aria-controls="mitgliedschaften">Mitgliedschaft</a>
+                    <a class="list-group-item list-group-item-action" id="list-referenzen-list" data-bs-toggle="list"
+                       href="#list-referenzen" role="tab" aria-controls="referenzen">Dateien</a>
+                    <a class="list-group-item list-group-item-action" id="list-bank-details" data-bs-toggle="list"
+                       href="#list-bank" role="tab" aria-controls="bank-details">Bankdaten</a>
+                </div>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-info" role="tabpanel" aria-labelledby="list-info-details">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Persönliche Daten</h5>
+                                <hr class="bg-danger border-2 border-top border-info">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="username" name="username" autocomplete="off"
+                                                   [(ngModel)]="member.username"
+                                                   [readOnly]="!editStates.username">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.username ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('username', member.username, member.id)">
+                                                <i class="fa" [ngClass]="editStates.username ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="id" class="form-label">E-Mail</label>
+                                        <input type="text" class="form-control" id="id" disabled autocomplete="off" value="{{member.email}}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="geb" class="form-label">Geburtstag</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="geb" name="geb" autocomplete="off"
+                                                   [(ngModel)]="member.geb"
+                                                   [readOnly]="!editStates.geb">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.geb ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('geb', member.geb, member.id)">
+                                                <i class="fa" [ngClass]="editStates.geb ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="city" class="form-label">Stadt</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="city" name="city" autocomplete="off"
+                                                   [(ngModel)]="member.city"
+                                                   [readOnly]="!editStates.city">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.city ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('city', member.city, member.id)">
+                                                <i class="fa" [ngClass]="editStates.city ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="street" class="form-label">Straße</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="street" name="street" autocomplete="off"
+                                                   [(ngModel)]="member.street"
+                                                   [readOnly]="!editStates.street">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.street ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('street', member.street, member.id)">
+                                                <i class="fa" [ngClass]="editStates.street ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="plz" class="form-label">PLZ</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="plz" name="city" autocomplete="off"
+                                                   [(ngModel)]="member.plz"
+                                                   [readOnly]="!editStates.plz">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.plz ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('plz', member.plz, member.id)">
+                                                <i class="fa" [ngClass]="editStates.plz ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="list-mitgliedschaften" role="tabpanel" aria-labelledby="list-mitgliedschaften-list">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Daten</h5>
+                                <hr class="bg-danger border-2 border-top border-info">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="username" name="username" autocomplete="off"
+                                                   [(ngModel)]="member.username"
+                                                   [readOnly]="!editStates.username">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.username ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('username', member.username, member.id)">
+                                                <i class="fa" [ngClass]="editStates.username ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="mitgliedsnummer" class="form-label">Mitgliedsnummer</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="mitgliedsnummer" name="mitgliedsnummer" autocomplete="off"
+                                                   [(ngModel)]="member.mitgliedsnummer"
+                                                   [readonly]="!editStates.mitgliedsnummer">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.mitgliedsnummer ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('mitgliedsnummer', member.mitgliedsnummer, member.id)">
+                                                <i class="fa" [ngClass]="editStates.mitgliedsnummer ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="kundennummer" class="form-label">Kundennummer</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="kundennummer" name="kundennummer" autocomplete="off"
+                                                   [(ngModel)]="member.kundennummer"
+                                                   [readonly]="!editStates.kundennummer">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.kundennummer ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('kundennummer', member.kundennummer, member.id)">
+                                                <i class="fa" [ngClass]="editStates.kundennummer ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="id" class="form-label">E-Mail</label>
+                                        <input type="text" class="form-control" id="id" disabled autocomplete="off" value="{{member.email}}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Passwort</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="password" name="passoword" autocomplete="off"
+                                                   [(ngModel)]="member.password"
+                                                   [readonly]="!editStates.password">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.password ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('password', member.password, member.id)">
+                                                <i class="fa" [ngClass]="editStates.password ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="active" class="form-label">Gesperrt oder Aktiv?</label>
+                                        <input type="text" class="form-control" id="active" disabled autocomplete="off"
+                                               value="{{ member.active ? 'Aktiv' : 'Gesperrt' }}">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-referenzen" role="tabpanel" aria-labelledby="list-referenzen-list">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row pt-2 pb-2">
+                                    <h5 class="card-title col-8 m-0 d-flex align-items-center">{{ files.length > 0 ? 'Tickets' : 'Keine Tickets vorhanden' }}</h5>
+                                    <div class="text-end col-4">
+                                        <button class="btn btn-success position-relative" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#uploadFileModal">
+                                            <i class="fa fa-upload"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div *ngIf="games$ | async as games">
+                                    <div class="table-responsive" *ngFor="let gameFiles of games; let i = index">
+                                        <hr class="bg-danger border-2 border-top border-info">
+                                        <table class="table table-sm table-hover caption-top">
+                                            <caption>{{gameFiles?.game}}</caption>
+                                            <thead class="table-light fs-6">
+                                            <tr>
+                                                <th scope="col" class="align-middle col-8">Name</th>
+                                                <th scope="col" class="align-middle">Spiel</th>
+                                                <th scope="col" class="align-middle text-center">Download</th>
+                                                <th scope="col" class="align-middle text-center">Ansehen</th>
+                                                <th scope="col" class="align-middle text-center">Löschen</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                            <tr *ngFor="let file of gameFiles.files">
+                                                <td class="align-middle text-truncate" style="max-width: 500px;">
+                                                    {{ file?.fileName }}
+                                                </td>
+                                                <td class="align-middle">{{ file?.game }}</td>
+                                                <td class="align-middle text-center">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-success" (click)="downloadFile(member.id, file.fileName, file.game)">
+                                                            <i class="fa fa-download"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#pdfPreviewModal"
+                                                                (click)="loadPdf(member.id, file.fileName, file.game)">
+                                                            <i class="fa fa-eye"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-outline-danger" (click)="deleteFile(member.id, file.fileName, file.game)">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-bank" role="tabpanel" aria-labelledby="list-bank-details">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Bankdaten</h5>
+                                <hr class="bg-danger border-2 border-top border-info">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="visaormc" class="form-label">Art</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="visaormc" name="visaormc" autocomplete="off"
+                                                   [(ngModel)]="member.visaormc"
+                                                   [readOnly]="!editStates.visaormc">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.visaormc ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('visaormc', member.visaormc, member.id)">
+                                                <i class="fa" [ngClass]="editStates.visaormc ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nameoncard" class="form-label">Name auf Karte</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="nameoncard" name="nameoncard" autocomplete="off"
+                                                   [(ngModel)]="member.nameoncard"
+                                                   [readOnly]="!editStates.nameoncard">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.nameoncard ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('nameoncard', member.nameoncard, member.id)">
+                                                <i class="fa" [ngClass]="editStates.nameoncard ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cardnumber" class="form-label">Kartennummer</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="cardnumber" name="cardnumber" autocomplete="off"
+                                                   [(ngModel)]="member.cardnumber"
+                                                   [readOnly]="!editStates.cardnumber">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.cardnumber ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('cardnumber', member.cardnumber, member.id)">
+                                                <i class="fa" [ngClass]="editStates.cardnumber ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="month" class="form-label">Monat</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="month" name="month" autocomplete="off"
+                                                   [(ngModel)]="member.month"
+                                                   [readOnly]="!editStates.month">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.month ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('month', member.month, member.id)">
+                                                <i class="fa" [ngClass]="editStates.month ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="year" class="form-label">Jahr</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="year" name="year" autocomplete="off"
+                                                   [(ngModel)]="member.year"
+                                                   [readOnly]="!editStates.year">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.year ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('year', member.year, member.id)">
+                                                <i class="fa" [ngClass]="editStates.year ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cvc" class="form-label">Sicherheitscode</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="cvc" name="cvc" autocomplete="off"
+                                                   [(ngModel)]="member.cvc"
+                                                   [readOnly]="!editStates.cvc">
+                                            <button class="btn" type="button"
+                                                    [ngClass]="editStates.cvc ? 'btn-success' : 'btn-outline-secondary'"
+                                                    (click)="toggleEdit('cvc', member.cvc, member.id)">
+                                                <i class="fa" [ngClass]="editStates.cvc ? 'fa-floppy-disk' : 'fa-pen'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfPreviewModalLabel">PDF Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe [src]="pdfUrl" width="100%" height="500px" title="PDF View"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="uploadFileModal" tabindex="-1" aria-labelledby="uploadFileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadFileModalLabel">Datei hochladen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="fileUploadForm" *ngIf="orders.length > 0">
+                        <div class="mb-3">
+                            <label for="fileInput" class="form-label">Wähle die Tickets aus:</label>
+                            <input class="form-control" type="file" id="fileInput" (change)="onFilesSelected($event)" accept=".pdf" required multiple>
+                        </div>
+                        <div class="mb-3">
+                            <label for="game" class="form-label">Spiel:</label>
+                            <select class="form-control" id="game" name="game" [(ngModel)]="selectedGame" required>
+                                <option value="">Spiel auswählen</option>
+                                <option *ngFor="let order of orders" [value]="order.name">{{ order.name }}</option>
+                            </select>
+                        </div>
+                    </form>
+                    <h4 *ngIf="orders.length == 0">Bitte zuerst die Bestellung aufgeben.</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" *ngIf="orders.length > 0" (click)="uploadFile()">Hochladen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

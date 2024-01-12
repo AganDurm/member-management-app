@@ -1,0 +1,125 @@
+<div class="container">
+    <div class="container pt-4 pb-4">
+        <div class="row pt-2 pb-2">
+            <div class="col-md-8 col-8 d-flex align-items-center">
+                <a [routerLink]="['/home']"><i class="fa fa-arrow-left"></i></a>
+                <h3 class="mb-0 mx-3">Mitgliederverwaltung</h3>
+            </div>
+            <div class="col-md-4 col-4 text-end">
+                <button class="btn btn-danger position-relative" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteAllModal">
+                    <i class="fa fa-trash"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-light">
+            {{members.length}} <span class="visually-hidden">Anzahl</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="row pb-4 pt-2">
+            <div class="col-md-8 mt-1">
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <label for="activeFilter">Aktive</label>
+                        <input type="checkbox" id="activeFilter" class="mx-2"
+                               (click)="toggleActiveFilter()"
+                               [ngModel]="activeFilter"/>
+                    </div>
+                    <div class="input-group-text mx-2">
+                        <label for="inactiveFilter">Gesperrte</label>
+                        <input type="checkbox" id="inactiveFilter" class="mx-2"
+                               (click)="toggleInactiveFilter()"
+                               [ngModel]="inactiveFilter"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-1">
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">&#64;</span>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Name"
+                           aria-label="Username"
+                           aria-describedby="basic-addon1"
+                           id="searchInput"
+                           autocomplete="off"
+                           [(ngModel)]="searchText">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-4 col-md-6 pb-2" *ngFor="let member of filteredMembers | filterMembers: searchText; let i = index">
+                <div class="card mb-3" style="height: 100%;">
+                    <div class="card-body pt-4">
+                        <h5 class="card-title">E-Mail: {{member?.email}}</h5>
+                        <p class="card-text">Password: {{member?.password}}</p>
+                        <p class="card-text">Name: {{member?.username}}</p>
+                        <p class="card-text">Mitgliedsnummer: {{member?.mitgliedsnummer}}</p>
+                        <p class="card-text" *ngIf="member?.cvc">CVC: {{member?.cvc}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-10 col-10">
+                                <a class="btn btn-outline-dark" [routerLink]="['/members', member.id]">Verwalten</a>
+                                <button class="mx-2 btn"
+                                        [ngClass]="{'btn-outline-success': member.active, 'btn-outline-warning': !member.active}"
+                                        (click)="toggleMemberActiveStatus(member)">{{ member?.active ? 'Aktiv' : 'Gesperrt' }} <i class="fa fa-rotate"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-2 col-2" *ngIf="!member.active">
+                                <button class="btn btn-outline-danger" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                                (click)="memberToDeleteIndex = member.id">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" *ngIf="memberToDelete">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Mitglied löschen</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mt-3">
+                                    <span>Möchtest du <strong>{{ memberToDelete.email }}</strong> löschen?</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span>Zur Zeit <strong>{{ memberToDelete.active ? 'nicht Gesperrt' : 'Gesperrt' }}.</strong> </span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nein</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                        (click)="deleteMember(memberToDelete.id)">Ja</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmDeleteAllModal" tabindex="-1" aria-labelledby="deleteAllLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAllLabel">Mitglieder löschen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-3">
+                        <span>Möchtest du <strong>alle</strong> Mitglieder löschen?</span>
+                    </div>
+                    <div class="mb-3">
+                        <span><span class="badge rounded-pill bg-danger">HINWEIS</span> Dieser Vorgang kann nicht rückgängig gemacht werden.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nein</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                            (click)="deleteAllMembers()">Ja</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

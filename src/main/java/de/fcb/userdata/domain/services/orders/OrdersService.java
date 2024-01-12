@@ -45,6 +45,10 @@ public class OrdersService {
             orderByName.setKat4(order.getKat4());
             orderByName.setKat4platinum(order.getKat4platinum());
             orderByName.setKat4hunderts(order.getKat4hunderts());
+            orderByName.setKat1single(order.getKat1single());
+            orderByName.setKat2single(order.getKat2single());
+            orderByName.setKat3single(order.getKat3single());
+            orderByName.setKat4single(order.getKat4single());
             this.ordersRepository.save(orderByName);
         }
     }

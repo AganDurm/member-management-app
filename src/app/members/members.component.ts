@@ -39,14 +39,20 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.messageService.getMessages().subscribe(messages => this.messages = messages);
     this.loadingSubscription = this.loadingService.loading$.subscribe(isLoading => this.isLoading = isLoading);
 
-    this.subscription = this.apiService.findAll().subscribe((data: Member[]) => {
+    this.subscription = this.apiService.findAll().subscribe({
+      next: (data: Member[]) => {
+        this.loadingService.hide();
+        this.members = data;
+        this.filteredMembers = this.members;
+        if (this.members.length === 0) {
+          this.router.navigate(['/upload']).then(() => {
+          });
+        }
+      },
+      error: (error) => {
       this.loadingService.hide();
-      this.members = data;
-      this.filteredMembers = this.members;
-      if (this.members.length === 0) {
-        this.router.navigate(['/upload']).then(() => {
-        });
-      }
+      this.messageService.displayMessage(error.message);
+    }
     });
   }
 

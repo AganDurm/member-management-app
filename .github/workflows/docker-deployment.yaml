@@ -25,6 +25,9 @@ jobs:
       - name: List output of build
         run: ls -la build/libs/
 
+      - name: Print working directory
+        run: pwd
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 

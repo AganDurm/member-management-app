@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {PreloaderComponent} from './preloader/preloader.component';
 import {ApiService} from './api/service/api.service';
@@ -15,6 +15,7 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {HomeComponent} from './home/home.component';
 import {OrdersComponent} from './orders/orders.component';
+import {GlobalHttpInterceptorService} from './globalHttpInterceptor.service';
 
 
 @NgModule({
@@ -38,7 +39,12 @@ import {OrdersComponent} from './orders/orders.component';
   providers: [
     ApiService,
     LoadingService,
-    ResponseMessageService
+    ResponseMessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GlobalHttpInterceptorService,
+      multi: true
+    },
   ],
   bootstrap: [ AppComponent ]
 })

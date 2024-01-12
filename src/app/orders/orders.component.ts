@@ -52,7 +52,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   addNewGame(): void {
     if (this.game) {
-      let newGame: Orders = new Orders(this.game, 0,0,0,0,0,0);
+      let newGame: Orders = new Orders(this.game, 0,0,0,0,0,0, 0, 0, 0,0);
       this.apiService.saveNewOrder(newGame).subscribe({
         next: (response: ApiResponse) => {
           this.messageService.displayMessage(response.message);

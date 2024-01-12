@@ -33,11 +33,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
               private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.loadingService.show();
-
     this.messageSubscription = this.messageService.getMessages().subscribe(messages => this.messages = messages);
     this.loadingSubscription = this.loadingService.loading$.subscribe(isLoading => this.isLoading = isLoading);
     this.fetchOrders();
+
+    this.loadingService.show();
+
     this.apiService.findAllPdfFiles().subscribe({
       next: (files: File[]) => {
         this.loadingService.hide();
@@ -65,8 +66,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   fetchOrders(): void {
-    this.ordersSubscription = this.apiService.findAllOrders().subscribe((data: Orders[]) => {
-      this.orders = data.reverse();
+    this.loadingService.show();
+
+    this.ordersSubscription = this.apiService.findAllOrders().subscribe({
+      next: (data: Orders[]) => {
+        this.loadingService.hide();
+        this.orders = data.reverse();
+      },
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
   }
 

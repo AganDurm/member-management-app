@@ -80,6 +80,46 @@ export class OrdersComponent implements OnInit, OnDestroy {
     game.kat4hunderts++;
   }
 
+  decrementKat1single(game: Orders): void {
+    if (game.kat1single > 0) {
+      game.kat1single--;
+    }
+  }
+
+  incrementKat1single(game: Orders): void {
+    game.kat1single++;
+  }
+
+  decrementKat2single(game: Orders): void {
+    if (game.kat2single > 0) {
+      game.kat2single--;
+    }
+  }
+
+  incrementKat2single(game: Orders): void {
+    game.kat2single++;
+  }
+
+  decrementKat3single(game: Orders): void {
+    if (game.kat3single > 0) {
+      game.kat3single--;
+    }
+  }
+
+  incrementKat3single(game: Orders): void {
+    game.kat3single++;
+  }
+
+  decrementKat4single(game: Orders): void {
+    if (game.kat4single > 0) {
+      game.kat4single--;
+    }
+  }
+
+  incrementKat4single(game: Orders): void {
+    game.kat4single++;
+  }
+
   decrementKat4platinum(game: Orders): void {
     if (game.kat4platinum > 0) {
       game.kat4platinum--;

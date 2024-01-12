@@ -52,7 +52,7 @@
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
-                                        <label class="form-label  m-0">Kat. 1 (Block 1XX):</label>
+                                        <label class="form-label m-0">Kat. 1 (Block 1XX):</label>
                                         <div>
                                             <button type="button" class="btn btn-outline-secondary btn-sm"
                                                     (click)="decrementKat4hunderts(order)">-</button>
@@ -63,7 +63,7 @@
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
-                                        <label class="form-label  m-0">Kat. 1 (Blöcke)
+                                        <label class="form-label m-0">Kat. 1 (Blöcke)
                                             <button class="btn btn-sm btn-default"
                                                     data-bs-toggle="tooltip"
                                                     data-bs-placement="top"
@@ -81,7 +81,18 @@
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
-                                        <label class="form-label  m-0">Kat. 2:</label>
+                                        <label class="form-label m-0">Kat. 1 Einzeln:</label>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="decrementKat1single(order)">-</button>
+                                            <span class="mx-2">{{order.kat1single}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat1single(order)">+</button>
+                                        </div>
+                                    </div>
+                                    <hr class="bg-danger border-1 border-top border-dark">
+                                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                                        <label class="form-label m-0">Kat. 2:</label>
                                         <div>
                                             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat2(order)">-</button>
                                             <span class="mx-2">{{order.kat2}}</span>
@@ -90,11 +101,33 @@
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
                                     <div class="mb-3 d-flex justify-content-between align-items-center">
-                                        <label class="form-label  m-0">Kat. 3:</label>
+                                        <label class="form-label m-0">Kat. 2 Einzeln:</label>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="decrementKat2single(order)">-</button>
+                                            <span class="mx-2">{{order.kat2single}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat2single(order)">+</button>
+                                        </div>
+                                    </div>
+                                    <hr class="bg-danger border-1 border-top border-dark">
+                                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                                        <label class="form-label m-0">Kat. 3:</label>
                                         <div>
                                             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="decrementKat3(order)">-</button>
                                             <span class="mx-2">{{order.kat3}}</span>
                                             <button type="button" class="btn btn-outline-secondary btn-sm" (click)="incrementKat3(order)">+</button>
+                                        </div>
+                                    </div>
+                                    <hr class="bg-danger border-1 border-top border-dark">
+                                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                                        <label class="form-label m-0">Kat. 3 Einzeln:</label>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="decrementKat3single(order)">-</button>
+                                            <span class="mx-2">{{order.kat3single}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat3single(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">
@@ -105,6 +138,17 @@
                                             <span class="mx-2">{{order.kat4}}</span>
                                             <button type="button" class="btn btn-outline-secondary btn-sm"
                                                     (click)="incrementKat4(order)">+</button>
+                                        </div>
+                                    </div>
+                                    <hr class="bg-danger border-1 border-top border-dark">
+                                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                                        <label class="form-label  m-0">Kat. 4 Einzeln:</label>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="decrementKat4single(order)">-</button>
+                                            <span class="mx-2">{{order.kat4single}}</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    (click)="incrementKat4single(order)">+</button>
                                         </div>
                                     </div>
                                     <hr class="bg-danger border-1 border-top border-dark">

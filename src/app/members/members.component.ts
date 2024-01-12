@@ -40,12 +40,13 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.loadingSubscription = this.loadingService.loading$.subscribe(isLoading => this.isLoading = isLoading);
 
     this.subscription = this.apiService.findAll().subscribe((data: Member[]) => {
+      this.loadingService.hide();
       this.members = data;
       this.filteredMembers = this.members;
       if (this.members.length === 0) {
-        this.router.navigate(['/upload']).then(() => {});
+        this.router.navigate(['/upload']).then(() => {
+        });
       }
-      this.loadingService.hide();
     });
   }
 
@@ -78,13 +79,19 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   toggleMemberActiveStatus(member: Member): void {
+    this.loadingService.show();
+
     member.active = !member.active;
     this.apiService.updateMemberActiveStatus(member.id).subscribe({
       next: (response: ApiResponse) => {
+        this.loadingService.hide();
         this.messageService.displayMessage(response.message);
         this.filterMembers();
       },
-      error: (error) => this.messageService.displayMessage(error.message)
+      error: (error) => {
+        this.loadingService.hide();
+        this.messageService.displayMessage(error.message);
+      }
     });
   }
 

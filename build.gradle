@@ -35,12 +35,10 @@ dependencies {
     implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
-
-tasks.named('test', Test.class).configure({
-    useJUnitPlatform()
-})
